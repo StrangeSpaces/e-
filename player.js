@@ -9,6 +9,7 @@ var WALKING = 1;
 var JUMP_SQUAT = 2;
 var JUMPING = 3;
 var JUMP_LAND = 4;
+var AIR_DASH = 5;
 
 var walkableStates = [IDLE, WALKING];
 
@@ -32,6 +33,7 @@ function Player() {
 Player.prototype.hitGround = function() {
     this.vel.y = 0;
     this.collided = true;
+    this.dashed = false;
 
     if (this.state == JUMPING) {
         this.state = JUMP_LAND;
@@ -90,6 +92,24 @@ Player.prototype.update = function() {
             }
             this.energyLost();
         }
+    } else if (this.state == JUMPING) {
+        if (!Key.isDown(Key.UP)) {
+            this.canDash = true;
+        } else if (Key.isDown(Key.UP) && this.canDash && !this.dashed) {
+            this.state = AIR_DASH;
+            this.dashed = true;
+            if (Key.isDown(Key.RIGHT)) {
+                this.sprite.scale.x = 1;
+                this.dir = RIGHT;
+            } else if (Key.isDown(Key.LEFT)) {
+                this.sprite.scale.x = -1;
+                this.dir = LEFT;
+            }
+
+            this.vel.x = this.dir * 3;
+            this.vel.y = 0;
+            this.airDashDuration = 10;
+        }
     }
 
     if (this.state == JUMP_SQUAT) {
@@ -104,6 +124,7 @@ Player.prototype.update = function() {
             }
 
             this.state = JUMPING;
+            this.canDash = false;
             this.vel.y = -6;
             this.frameNumber = 13;
         }
@@ -135,18 +156,24 @@ Player.prototype.update = function() {
         } else if (this.jumpPause == 9) {
             this.frameNumber++;
         }
+    } else if (this.state == AIR_DASH) {
+        this.airDashDuration--;
+        if (this.airDashDuration <= 0) {
+            this.state = JUMPING;
+        }
     }
 
-    this.vel.y += 0.25;
+    if (this.state != AIR_DASH) this.vel.y += 0.25;
 
     this.collided = false;
 
     Entity.prototype.update.call(this);
 
-    if (!this.collided && this.state != JUMPING) {
+    if (!this.collided && this.state != JUMPING && this.state != AIR_DASH) {
         this.state = JUMPING;
         this.jumpPause = 0;
         this.frameNumber = 15;
+        this.canDash = false;
     }
 };
 
