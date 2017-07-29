@@ -72,7 +72,7 @@ function loadLevel() {
 
     Tilemap.init();
     entities.push(new Player());
-    entities.push(new Enemy());
+    // entities.push(new Enemy());
 }
 
 function start() {
@@ -99,7 +99,8 @@ function init() {
   window.addEventListener('resize', resizeHandler, false);
   resizeHandler();
   
-  PIXI.loader.add('test', 'imgs/test.png').load(function (loader, res) {
+  PIXI.loader.add('test', 'imgs/test.png')
+             .add('eneg', 'imgs/eneg.png').load(function (loader, res) {
       resources = res;
 
       window.focus();

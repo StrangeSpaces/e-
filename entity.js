@@ -39,7 +39,7 @@ function Entity(file, width, height) {
     this.id = ++runningID;
 
     if (file) {
-        this.frameNumber = 3;
+        this.frameNumber = 0;
         this.framesPerRow = Math.floor(resources[file].texture.width / width);
 
         this.frame = new PIXI.Rectangle(0, 0, width, height);

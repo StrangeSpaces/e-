@@ -5,6 +5,18 @@ var walkableStates = [IDLE, WALKING];
 
 function Enemy() {
     Entity.call(this, 'test', 16, 16);
+    this.type = ENEMY;
+};
+
+
+
+Bouncer.prototype = Object.create(Enemy.prototype);
+Bouncer.prototype.parent = Enemy.prototype;
+
+var walkableStates = [IDLE, WALKING];
+
+function Bouncer() {
+    Entity.call(this, 'test', 16, 16);
 
     this.type = ENEMY;
     this.walkCycle = 0;
@@ -19,7 +31,7 @@ function Enemy() {
     this.endX = this.pos.x + 100;
 };
 
-Enemy.prototype.hitGround = function() {
+Bouncer.prototype.hitGround = function() {
     this.vel.y = 0;
 
     if (this.state == JUMPING) {
@@ -27,13 +39,13 @@ Enemy.prototype.hitGround = function() {
     }
 }
 
-Enemy.prototype.step = function() {
+Bouncer.prototype.step = function() {
     if (this.walkCycle <= 0) {
         this.walkCycle = 16;
     }
 }
 
-Enemy.prototype.jump = function() {
+Bouncer.prototype.jump = function() {
     this.jumpPause = 10;
     this.state = JUMP_SQUAT;
 
@@ -46,7 +58,7 @@ Enemy.prototype.jump = function() {
     }
 }
 
-Enemy.prototype.update = function() {
+Bouncer.prototype.update = function() {
     if (walkableStates.includes(this.state)) {
         if (this.walkCycle <= 0) {
             if (this.pos.x <= this.startX) {
@@ -76,9 +88,10 @@ Enemy.prototype.update = function() {
 
     this.vel.y += 0.5;
 
-    Entity.prototype.update.call(this);
+    Bouncer.prototype.update.call(this);
 };
 
-Enemy.prototype.updateGraphics = function() {
+Bouncer.prototype.updateGraphics = function() {
     Entity.prototype.updateGraphics.call(this);
 }
+

@@ -12,7 +12,7 @@ var JUMPING = 3;
 var walkableStates = [IDLE, WALKING];
 
 function Player() {
-    Entity.call(this, 'test', 16, 16);
+    Entity.call(this, 'eneg', 48, 48);
 
     this.type = PLAYER;
     this.walkCycle = -100;
@@ -21,7 +21,7 @@ function Player() {
 
     this.state = IDLE;
 
-    this.pos.y = 160;
+    this.pos.y = 100;
 
     this.energy = 1;
 };
@@ -36,7 +36,13 @@ Player.prototype.hitGround = function() {
 
 Player.prototype.step = function() {
     if (this.walkCycle <= 0) {
-        this.walkCycle = 8;
+        this.walkCycle = 27;
+        if (this.frameNumber == 0) {
+            this.frameNumber = 5;
+        } else {
+            this.frameNumber++;
+            if (this.frameNumber == 15) this.frameNumber = 5;
+        }
     }
 }
 
@@ -70,6 +76,7 @@ Player.prototype.update = function() {
                 this.step();
             } else {
                 this.energy += 0.02;
+                this.frameNumber = 0;
             }
             this.energy -= 0.02;
             if (this.energy < 0) this.energy = 0;
@@ -84,14 +91,20 @@ Player.prototype.update = function() {
             this.vel.x = this.exitVelocity;
         }
     } else if (walkableStates.includes(this.state)) {
-        if (!Key.isDown(Key.RIGHT) && !Key.isDown(Key.LEFT)) {
-            this.walkCycle = 0;
-        }
-
         if (this.walkCycle > 0) {
-            this.vel.x = (1.5) * this.dir;
+            this.vel.x = (0.5) * this.dir;
+            if (this.walkCycle == 18) {
+                this.frameNumber++;
+            } else if (this.walkCycle == 9) {
+                this.frameNumber++;
+            }
         } else {
             this.vel.x = 0;
+            if (this.walkCycle == 0) {
+                this.frameNumber++;
+            } else if (this.walkCycle == -4) {
+                this.frameNumber++;
+            }
         }
         this.walkCycle--;
     }
@@ -102,5 +115,6 @@ Player.prototype.update = function() {
 };
 
 Player.prototype.updateGraphics = function() {
+    console.log(this.frameNumber);
     Entity.prototype.updateGraphics.call(this);
 }
