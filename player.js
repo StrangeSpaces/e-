@@ -69,9 +69,9 @@ Player.prototype.update = function() {
                 this.dir = LEFT;
                 this.step();
             } else {
-                this.energy += 0.01;
+                this.energy += 0.02;
             }
-            this.energy -= 0.01;
+            this.energy -= 0.02;
         }
     }
 
