@@ -90,7 +90,9 @@ Entity.prototype.updateGraphics = function() {
 
 Entity.prototype.update = function() {
     this.pos.x += this.vel.x;
+    Tilemap.check(this, 0);
     this.pos.y += this.vel.y;
+    Tilemap.check(this, 1);
 
     this.updateGraphics();
 };

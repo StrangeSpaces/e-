@@ -24,6 +24,14 @@ function Player() {
     this.pos.y = 160;
 };
 
+Player.prototype.hitGround = function() {
+    this.vel.y = 0;
+
+    if (this.state == JUMPING) {
+        this.state = IDLE;
+    }
+}
+
 Player.prototype.step = function() {
     if (this.walkCycle <= 0) {
         this.walkCycle = 20;
@@ -81,19 +89,8 @@ Player.prototype.update = function() {
     this.vel.y += 0.5;
 
     Entity.prototype.update.call(this);
-
-    if (this.pos.y >= 160) {
-        this.vel.y = 0;
-        this.pos.y = 160;
-
-        if (this.state == JUMPING) {
-            this.state = IDLE;
-        }
-    }
 };
 
 Player.prototype.updateGraphics = function() {
-
-
     Entity.prototype.updateGraphics.call(this);
 }

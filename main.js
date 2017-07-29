@@ -70,6 +70,7 @@ function animate() {
 function loadLevel() {
     currentContainer = mainContainer;
 
+    Tilemap.init();
     entities.push(new Player());
 }
 
