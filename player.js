@@ -36,12 +36,12 @@ Player.prototype.hitGround = function() {
 
 Player.prototype.step = function() {
     if (this.walkCycle <= 0) {
-        this.walkCycle = 27;
+        this.walkCycle = 18;
         if (this.frameNumber == 0) {
-            this.frameNumber = 5;
+            this.frameNumber = 4;
         } else {
             this.frameNumber++;
-            if (this.frameNumber == 15) this.frameNumber = 5;
+            if (this.frameNumber == 12) this.frameNumber = 4;
         }
     }
 }
@@ -92,10 +92,8 @@ Player.prototype.update = function() {
         }
     } else if (walkableStates.includes(this.state)) {
         if (this.walkCycle > 0) {
-            this.vel.x = (0.5) * this.dir;
-            if (this.walkCycle == 18) {
-                this.frameNumber++;
-            } else if (this.walkCycle == 9) {
+            this.vel.x = (1) * this.dir;
+            if (this.walkCycle == 9) {
                 this.frameNumber++;
             }
         } else {
