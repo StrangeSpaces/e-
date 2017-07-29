@@ -1,5 +1,5 @@
 var logicalWidth = 320;
-var logicalHeight = 240;
+var logicalHeight = 200;
 
 var leftVel = -0.5;
 var rightVel = 0.5;
