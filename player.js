@@ -15,13 +15,15 @@ function Player() {
     Entity.call(this, 'test', 16, 16);
 
     this.type = PLAYER;
-    this.walkCycle = 0;
+    this.walkCycle = -100;
 
     this.dir = RIGHT;
 
     this.state = IDLE;
 
     this.pos.y = 160;
+
+    this.energy = 1;
 };
 
 Player.prototype.hitGround = function() {
@@ -34,7 +36,7 @@ Player.prototype.hitGround = function() {
 
 Player.prototype.step = function() {
     if (this.walkCycle <= 0) {
-        this.walkCycle = 16;
+        this.walkCycle = 8;
     }
 }
 
@@ -56,7 +58,7 @@ Player.prototype.update = function() {
         if (Key.isDown(Key.UP)) {
             this.queueJump = true;
         }
-        if (this.walkCycle <= 0) {
+        if (this.walkCycle <= -8) {
             if (this.queueJump) {
                 this.queueJump = false;
                 this.jump();
@@ -66,7 +68,10 @@ Player.prototype.update = function() {
             } else if (Key.isDown(Key.LEFT)) {
                 this.dir = LEFT;
                 this.step();
+            } else {
+                this.energy += 0.01;
             }
+            this.energy -= 0.01;
         }
     }
 
@@ -74,19 +79,19 @@ Player.prototype.update = function() {
         this.jumpPause--;
         if (this.jumpPause == 0) {
             this.state = JUMPING;
-            this.vel.y = -8;
+            this.vel.y = -5;
             this.vel.x = this.exitVelocity;
         }
     } else if (walkableStates.includes(this.state)) {
-        if (this.walkCycle > 8) {
-            this.vel.x = 1 * this.dir;
+        if (this.walkCycle > 0) {
+            this.vel.x = (1 + this.energy/2) * this.dir;
         } else {
             this.vel.x = 0;
         }
         this.walkCycle--;
     }
 
-    this.vel.y += 0.5;
+    this.vel.y += 0.25;
 
     Entity.prototype.update.call(this);
 };
