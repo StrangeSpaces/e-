@@ -1,5 +1,6 @@
 var tiles = TileMaps['start']['layers'][0]['data'];
 var tileMapWidth = TileMaps['start']['width'];
+var cols = TileMaps['start']['tilesets'][0]['columns']
 
 var Tilemap = {
     tileSize: 16,
@@ -9,8 +10,8 @@ var Tilemap = {
             for (var x = 0; x < 20; x++) {
                 var f = this.getTile(x, y) - 1;
                 if (f >= 0) {
-                    var frame = new PIXI.Rectangle(f % 4 * 16, Math.floor(f / 4) * 16, this.tileSize, this.tileSize);
-                    var sprite = new PIXI.Sprite(new PIXI.Texture(resources['test'].texture, frame));
+                    var frame = new PIXI.Rectangle(f % cols * 16, Math.floor(f / cols) * 16, this.tileSize, this.tileSize);
+                    var sprite = new PIXI.Sprite(new PIXI.Texture(resources['tiles'].texture, frame));
 
                     sprite.anchor.x = 0.5;
                     sprite.anchor.y = 0.5;
@@ -33,7 +34,7 @@ var Tilemap = {
 
         for (var y = startY; y < endY; y++) {
             for (var x = startX; x < endX; x++) {
-                if (this.getTile(x, y) > 0) {
+                if (this.getTile(x, y) != 6) {
                     // if (x * this.tileSize < entity.right() &&
                     //     y * this.tileSize < entity.bot() &&
                     //     (x+1) * this.tileSize > entity.left() &&

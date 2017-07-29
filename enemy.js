@@ -1,3 +1,29 @@
+Energy.prototype = Object.create(Entity.prototype);
+Energy.prototype.parent = Energy.prototype;
+
+function Energy() {
+    Entity.call(this, 'energy', 16, 16);
+
+    this.addBox();
+    this.f = 0;
+
+    this.pos.x = 100
+
+    this.type = ENERGY;
+}
+
+Energy.prototype.update = function() {
+    this.f++;
+    if (this.f % 6 == 0) {
+        this.frameNumber = (this.frameNumber + 1) % 8;
+    }
+
+    this.vel.y += 0.1;
+
+    Entity.prototype.update.call(this);
+}
+
+
 Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.parent = Entity.prototype;
 

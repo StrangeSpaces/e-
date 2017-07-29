@@ -62,7 +62,7 @@ Player.prototype.step = function() {
 }
 
 Player.prototype.jump = function() {
-    this.jumpPause = 10;
+    this.jumpPause = 10 + Math.ceil((1 - this.energy) * 24);;
     this.state = JUMP_SQUAT;
     this.frameNumber = 12;
 }
@@ -103,7 +103,7 @@ Player.prototype.update = function() {
             this.queueAttack = false;
             this.attack();
             this.energyLost();
-        } else if (Key.isDown(Key.DOWN)) {
+        } else if (this.walkCycle <= -8 - (1 - this.energy) * 24 && Key.isDown(Key.DOWN)) {
             this.state = CROUCH;
             this.frameNumber = 28;
             this.walkCycle = -100;
@@ -124,32 +124,32 @@ Player.prototype.update = function() {
             this.energyLost();
         }
     } else if (this.state == JUMPING) {
-        if (!Key.isDown(Key.UP)) {
-            this.canDash = true;
-        } else if (Key.isDown(Key.UP) && this.canDash && !this.dashed) {
-            this.state = AIR_DASH;
-            this.dashed = true;
-            if (Key.isDown(Key.RIGHT)) {
-                this.sprite.scale.x = 1;
-                this.dir = RIGHT;
-            } else if (Key.isDown(Key.LEFT)) {
-                this.sprite.scale.x = -1;
-                this.dir = LEFT;
-            }
+        // if (!Key.isDown(Key.UP)) {
+        //     this.canDash = true;
+        // } else if (Key.isDown(Key.UP) && this.canDash && !this.dashed) {
+        //     this.state = AIR_DASH;
+        //     this.dashed = true;
+        //     if (Key.isDown(Key.RIGHT)) {
+        //         this.sprite.scale.x = 1;
+        //         this.dir = RIGHT;
+        //     } else if (Key.isDown(Key.LEFT)) {
+        //         this.sprite.scale.x = -1;
+        //         this.dir = LEFT;
+        //     }
 
-            this.vel.x = this.dir * 3;
-            this.vel.y = 0;
-            this.airDashDuration = 20;
-        }
+        //     this.vel.x = this.dir * 3;
+        //     this.vel.y = 0;
+        //     this.airDashDuration = 20;
+        // }
     }
 
     if (this.state == JUMP_SQUAT) {
         this.jumpPause--;
         if (this.jumpPause == 0) {
             if (Key.isDown(Key.RIGHT)) {
-                this.vel.x = 1;
+                this.vel.x = 1.5;
             } else if (Key.isDown(Key.LEFT)) {
-                this.vel.x = -1;
+                this.vel.x = -1.5;
             } else {
                 this.vel.x = 0;
             }
@@ -185,7 +185,13 @@ Player.prototype.update = function() {
             this.state = IDLE;
             this.walkCycle = -100;
         } else if (this.jumpPause == 9) {
-            this.frameNumber++;
+            if (Key.isDown(Key.DOWN)) {
+                this.state = CROUCH;
+                this.frameNumber = 28;
+                this.walkCycle = -100;
+            } else {
+                this.frameNumber++;
+            }
         }
     } else if (this.state == AIR_DASH) {
         this.airDashDuration--;

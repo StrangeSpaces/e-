@@ -26,6 +26,7 @@ Vec.prototype.setLength = function(target) {
 var ENTITY = 0;
 var PLAYER = 1;
 var ENEMY = 2;
+var ENERGY = 3;
 
 var runningID = 0;
 
@@ -132,3 +133,7 @@ Entity.prototype.update = function() {
 
     this.updateGraphics();
 };
+
+Entity.prototype.hitGround = function() {
+    this.vel.y = 0;
+}

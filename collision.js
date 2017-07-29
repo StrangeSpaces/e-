@@ -27,3 +27,9 @@ CollisionHandler.handles.push([PLAYER, ENEMY, function(player, enemy, boxes) {
         enemy.dead = true;
     }
 }]);
+
+CollisionHandler.handles.push([PLAYER, ENERGY, function(player, energy, boxes) {
+    energy.dead = true;
+    player.energy += 0.05;
+    if (player.energy > 1) player.energy = 1;
+}]);
