@@ -137,3 +137,11 @@ Entity.prototype.update = function() {
 Entity.prototype.hitGround = function() {
     this.vel.y = 0;
 }
+
+Entity.prototype.friction = function(amount) {
+    if (Math.abs(this.vel.x) < amount) {
+        this.vel.x = 0;
+    } else {
+        this.vel.x -= amount * Math.sign(this.vel.x);
+    }
+}

@@ -18,6 +18,10 @@ var entities = [];
 var currentLevel = 0;
 var scaleFactor;
 
+function random(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
 function resizeHandler() {
   scaleFactor = Math.min(
     Math.floor(window.innerWidth / logicalWidth),

@@ -6,6 +6,7 @@ function Energy() {
 
     this.addBox();
     this.f = 0;
+    this.frameNumber = Math.floor(random(0, 8));
 
     this.pos.x = 100
 
@@ -13,6 +14,8 @@ function Energy() {
 }
 
 Energy.prototype.update = function() {
+    this.friction(0.05);
+
     this.f++;
     if (this.f % 6 == 0) {
         this.frameNumber = (this.frameNumber + 1) % 8;

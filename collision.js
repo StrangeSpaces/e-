@@ -25,10 +25,25 @@ var CollisionHandler = {
 CollisionHandler.handles.push([PLAYER, ENEMY, function(player, enemy, boxes) {
     if (boxes[0] > 0) {
         enemy.dead = true;
+
+        for (var i = 0; i < 4; i++) {
+            var eng = new Energy();
+            entities.push(eng);
+
+            var dx = random(-5, 5)
+
+            eng.pos.x = enemy.pos.x + dx;
+            eng.pos.y = enemy.pos.y;
+
+            eng.vel.x = dx/5;
+            eng.vel.y = random(-1, -0.5)
+        }
     }
 }]);
 
 CollisionHandler.handles.push([PLAYER, ENERGY, function(player, energy, boxes) {
+    if (boxes[0] != 0) return;
+
     energy.dead = true;
     player.energy += 0.05;
     if (player.energy > 1) player.energy = 1;

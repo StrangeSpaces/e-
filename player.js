@@ -62,7 +62,7 @@ Player.prototype.step = function() {
 }
 
 Player.prototype.jump = function() {
-    this.jumpPause = 10 + Math.ceil((1 - this.energy) * 24);;
+    this.jumpPause = 8 + Math.ceil((1 - this.energy) * 24);;
     this.state = JUMP_SQUAT;
     this.frameNumber = 12;
 }
@@ -103,11 +103,11 @@ Player.prototype.update = function() {
             this.queueAttack = false;
             this.attack();
             this.energyLost();
-        } else if (this.walkCycle <= -8 - (1 - this.energy) * 24 && Key.isDown(Key.DOWN)) {
+        } else if (this.walkCycle <= -4 - (1 - this.energy) * 24 && Key.isDown(Key.DOWN)) {
             this.state = CROUCH;
             this.frameNumber = 28;
             this.walkCycle = -100;
-        } else if (this.walkCycle <= -8 - (1 - this.energy) * 24) {
+        } else if (this.walkCycle <= -4 - (1 - this.energy) * 24) {
             if (Key.isDown(Key.RIGHT)) {
                 this.sprite.scale.x = 1;
                 this.dir = RIGHT;
