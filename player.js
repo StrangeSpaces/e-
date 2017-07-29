@@ -84,6 +84,10 @@ Player.prototype.update = function() {
             this.vel.x = this.exitVelocity;
         }
     } else if (walkableStates.includes(this.state)) {
+        if (!Key.isDown(Key.RIGHT) && !Key.isDown(Key.LEFT)) {
+            this.walkCycle = 0;
+        }
+
         if (this.walkCycle > 0) {
             this.vel.x = (1.5) * this.dir;
         } else {
