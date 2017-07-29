@@ -10,11 +10,12 @@ var JUMP_SQUAT = 2;
 var JUMPING = 3;
 var JUMP_LAND = 4;
 var AIR_DASH = 5;
+var NORM_ATTK = 6;
 
 var walkableStates = [IDLE, WALKING];
 
 function Player() {
-    Entity.call(this, 'eneg', 48, 48);
+    Entity.call(this, 'eneg', 80, 64);
 
     this.type = PLAYER;
     this.walkCycle = -100;
@@ -25,7 +26,7 @@ function Player() {
     this.halfWidth = 8;
     this.halfHeight = 15;
 
-    this.offset.y = -9;
+    this.offset.y = -17;
 
     this.energy = 1;
 };
@@ -62,6 +63,20 @@ Player.prototype.jump = function() {
     this.frameNumber = 12;
 }
 
+Player.prototype.attack = function() {
+    this.attkDur = Math.ceil(-(1 - this.energy) * 24);
+    this.state = NORM_ATTK;
+    this.frameNumber = 20;
+
+    if (Key.isDown(Key.RIGHT)) {
+        this.sprite.scale.x = 1;
+        this.dir = RIGHT;
+    } else if (Key.isDown(Key.LEFT)) {
+        this.sprite.scale.x = -1;
+        this.dir = LEFT;
+    }
+}
+
 Player.prototype.energyLost = function() {
     this.energy -= 0.02;
     if (this.energy < 0) this.energy = 0;
@@ -69,12 +84,20 @@ Player.prototype.energyLost = function() {
 
 Player.prototype.update = function() {
     if (walkableStates.includes(this.state)) {
+        if (Key.isDown(Key.P)) {
+            this.queueAttack = true;
+        }
         if (Key.isDown(Key.UP)) {
             this.queueJump = true;
         }
+
         if (this.walkCycle < 0 && this.queueJump) {
             this.queueJump = false;
             this.jump();
+            this.energyLost();
+        } else if (this.walkCycle < 0 && this.queueAttack) {
+            this.queueAttack = false;
+            this.attack();
             this.energyLost();
         } else if (this.walkCycle <= -8 - (1 - this.energy) * 24) {
             if (Key.isDown(Key.RIGHT)) {
@@ -108,7 +131,7 @@ Player.prototype.update = function() {
 
             this.vel.x = this.dir * 3;
             this.vel.y = 0;
-            this.airDashDuration = 10;
+            this.airDashDuration = 20;
         }
     }
 
@@ -160,6 +183,15 @@ Player.prototype.update = function() {
         this.airDashDuration--;
         if (this.airDashDuration <= 0) {
             this.state = JUMPING;
+        }
+    } else if (this.state == NORM_ATTK) {
+        this.attkDur++;
+        if (this.attkDur == 6 * 6) {
+            this.state = IDLE;
+            this.frameNumber = 0;
+            this.walkCycle = -100;
+        } else if (this.attkDur > 0 && this.attkDur % 6 == 0) {
+            this.frameNumber++;
         }
     }
 

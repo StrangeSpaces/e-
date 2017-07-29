@@ -6,6 +6,7 @@ var Key = {
   RIGHT: [68, 39],
   DOWN: [83, 40],
   R: [82, 82],
+  P: [80, 80],
   
   isDown: function(keyCode) {
     return this._pressed[keyCode[0]] || this._pressed[keyCode[1]];
