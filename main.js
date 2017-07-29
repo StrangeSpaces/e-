@@ -72,7 +72,7 @@ function loadLevel() {
 
     Tilemap.init();
     entities.push(new Player());
-    // entities.push(new Enemy());
+    entities.push(new Bouncer());
 }
 
 function start() {

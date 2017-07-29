@@ -42,10 +42,10 @@ var Tilemap = {
                             }
                         } else {
                             if ((y+0.5) * this.tileSize - entity.pos.y > 0) {
-                                entity.pos.y = y * this.tileSize - entity.halfWidth;
+                                entity.pos.y = y * this.tileSize - entity.halfHeight;
                                 if (entity.hitGround) entity.hitGround();
                             } else {
-                                entity.pos.y = (y+1) * this.tileSize + entity.halfWidth;
+                                entity.pos.y = (y+1) * this.tileSize + entity.halfHeight;
                             }
                         }
                     }

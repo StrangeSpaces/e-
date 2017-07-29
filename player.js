@@ -8,6 +8,7 @@ var IDLE = 0;
 var WALKING = 1;
 var JUMP_SQUAT = 2;
 var JUMPING = 3;
+var JUMP_LAND = 4;
 
 var walkableStates = [IDLE, WALKING];
 
@@ -16,12 +17,11 @@ function Player() {
 
     this.type = PLAYER;
     this.walkCycle = -100;
-
     this.dir = RIGHT;
-
     this.state = IDLE;
 
     this.pos.y = 100;
+    this.halfWidth = 8;
 
     this.energy = 1;
 };
@@ -30,7 +30,10 @@ Player.prototype.hitGround = function() {
     this.vel.y = 0;
 
     if (this.state == JUMPING) {
-        this.state = IDLE;
+        this.state = JUMP_LAND;
+        this.jumpPause = 0;
+        this.frameNumber = 18;
+        this.vel.x = 0;
     }
 }
 
@@ -49,6 +52,7 @@ Player.prototype.step = function() {
 Player.prototype.jump = function() {
     this.jumpPause = 10;
     this.state = JUMP_SQUAT;
+    this.frameNumber = 12;
 
     if (Key.isDown(Key.RIGHT)) {
         this.exitVelocity = 1;
@@ -69,9 +73,11 @@ Player.prototype.update = function() {
                 this.queueJump = false;
                 this.jump();
             } else if (Key.isDown(Key.RIGHT)) {
+                this.sprite.scale.x = 1;
                 this.dir = RIGHT;
                 this.step();
             } else if (Key.isDown(Key.LEFT)) {
+                this.sprite.scale.x = -1;
                 this.dir = LEFT;
                 this.step();
             } else {
@@ -89,10 +95,11 @@ Player.prototype.update = function() {
             this.state = JUMPING;
             this.vel.y = -5;
             this.vel.x = this.exitVelocity;
+            this.frameNumber = 13;
         }
     } else if (walkableStates.includes(this.state)) {
         if (this.walkCycle > 0) {
-            this.vel.x = (1) * this.dir;
+            this.vel.x = (0.75) * this.dir;
             if (this.walkCycle == 9) {
                 this.frameNumber++;
             }
@@ -105,6 +112,17 @@ Player.prototype.update = function() {
             }
         }
         this.walkCycle--;
+    } else if (this.state == JUMPING) {
+        this.jumpPause++;
+        if (this.jumpPause % 9 == 0) this.frameNumber++;
+    } else if (this.state == JUMP_LAND) {
+        this.jumpPause++;
+        if (this.jumpPause == 18) {
+            this.frameNumber = 0;
+            this.state = IDLE;
+        } else if (this.jumpPause % 9 == 0) {
+            this.frameNumber++;
+        }
     }
 
     this.vel.y += 0.25;
@@ -113,6 +131,5 @@ Player.prototype.update = function() {
 };
 
 Player.prototype.updateGraphics = function() {
-    console.log(this.frameNumber);
     Entity.prototype.updateGraphics.call(this);
 }

@@ -5,18 +5,6 @@ var walkableStates = [IDLE, WALKING];
 
 function Enemy() {
     Entity.call(this, 'test', 16, 16);
-    this.type = ENEMY;
-};
-
-
-
-Bouncer.prototype = Object.create(Enemy.prototype);
-Bouncer.prototype.parent = Enemy.prototype;
-
-var walkableStates = [IDLE, WALKING];
-
-function Bouncer() {
-    Entity.call(this, 'test', 16, 16);
 
     this.type = ENEMY;
     this.walkCycle = 0;
@@ -31,7 +19,7 @@ function Bouncer() {
     this.endX = this.pos.x + 100;
 };
 
-Bouncer.prototype.hitGround = function() {
+Enemy.prototype.hitGround = function() {
     this.vel.y = 0;
 
     if (this.state == JUMPING) {
@@ -39,13 +27,13 @@ Bouncer.prototype.hitGround = function() {
     }
 }
 
-Bouncer.prototype.step = function() {
+Enemy.prototype.step = function() {
     if (this.walkCycle <= 0) {
         this.walkCycle = 16;
     }
 }
 
-Bouncer.prototype.jump = function() {
+Enemy.prototype.jump = function() {
     this.jumpPause = 10;
     this.state = JUMP_SQUAT;
 
@@ -58,7 +46,7 @@ Bouncer.prototype.jump = function() {
     }
 }
 
-Bouncer.prototype.update = function() {
+Enemy.prototype.update = function() {
     if (walkableStates.includes(this.state)) {
         if (this.walkCycle <= 0) {
             if (this.pos.x <= this.startX) {
@@ -88,8 +76,53 @@ Bouncer.prototype.update = function() {
 
     this.vel.y += 0.5;
 
-    Bouncer.prototype.update.call(this);
+    Entity.prototype.update.call(this);
 };
+
+Enemy.prototype.updateGraphics = function() {
+    Entity.prototype.updateGraphics.call(this);
+}
+
+
+
+
+Bouncer.prototype = Object.create(Enemy.prototype);
+Bouncer.prototype.parent = Enemy.prototype;
+
+var walkableStates = [IDLE, WALKING];
+
+function Bouncer() {
+    Entity.call(this, 'test', 16, 16);
+
+    this.type = ENEMY;
+    this.walkCycle = 0;
+
+    this.dir = RIGHT;
+
+    this.state = IDLE;
+
+    this.pos.y = 160;
+
+    this.startX = this.pos.x;
+    this.vel.x = 0.5;
+    this.endX = this.pos.x + 100;
+};
+
+Bouncer.prototype.hitGround = function() {
+    this.vel.y = -2.5;
+    if (this.pos.x <= this.startX) {
+        this.vel.x = 0.5;
+    } else if (this.pos.x >= this.endX) {
+        this.vel.x = -0.5;
+    }
+}
+
+
+Bouncer.prototype.update = function() {
+    this.vel.y += 0.1;
+
+    Entity.prototype.update.call(this);
+}
 
 Bouncer.prototype.updateGraphics = function() {
     Entity.prototype.updateGraphics.call(this);
