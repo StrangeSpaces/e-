@@ -25,6 +25,7 @@ Vec.prototype.setLength = function(target) {
 
 var ENTITY = 0;
 var PLAYER = 1;
+var ENEMY = 2;
 
 var runningID = 0;
 

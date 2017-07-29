@@ -1,20 +1,12 @@
-Player.prototype = Object.create(Entity.prototype);
-Player.prototype.parent = Entity.prototype;
-
-var LEFT = -1;
-var RIGHT = 1;
-
-var IDLE = 0;
-var WALKING = 1;
-var JUMP_SQUAT = 2;
-var JUMPING = 3;
+Enemy.prototype = Object.create(Entity.prototype);
+Enemy.prototype.parent = Entity.prototype;
 
 var walkableStates = [IDLE, WALKING];
 
-function Player() {
+function Enemy() {
     Entity.call(this, 'test', 16, 16);
 
-    this.type = PLAYER;
+    this.type = ENEMY;
     this.walkCycle = 0;
 
     this.dir = RIGHT;
@@ -22,9 +14,12 @@ function Player() {
     this.state = IDLE;
 
     this.pos.y = 160;
+
+    this.startX = this.pos.x;
+    this.endX = this.pos.x + 100;
 };
 
-Player.prototype.hitGround = function() {
+Enemy.prototype.hitGround = function() {
     this.vel.y = 0;
 
     if (this.state == JUMPING) {
@@ -32,13 +27,13 @@ Player.prototype.hitGround = function() {
     }
 }
 
-Player.prototype.step = function() {
+Enemy.prototype.step = function() {
     if (this.walkCycle <= 0) {
         this.walkCycle = 16;
     }
 }
 
-Player.prototype.jump = function() {
+Enemy.prototype.jump = function() {
     this.jumpPause = 10;
     this.state = JUMP_SQUAT;
 
@@ -51,22 +46,15 @@ Player.prototype.jump = function() {
     }
 }
 
-Player.prototype.update = function() {
+Enemy.prototype.update = function() {
     if (walkableStates.includes(this.state)) {
-        if (Key.isDown(Key.UP)) {
-            this.queueJump = true;
-        }
         if (this.walkCycle <= 0) {
-            if (this.queueJump) {
-                this.queueJump = false;
-                this.jump();
-            } else if (Key.isDown(Key.RIGHT)) {
+            if (this.pos.x <= this.startX) {
                 this.dir = RIGHT;
-                this.step();
-            } else if (Key.isDown(Key.LEFT)) {
+            } else if (this.pos.x >= this.endX) {
                 this.dir = LEFT;
-                this.step();
             }
+            this.step();
         }
     }
 
@@ -91,6 +79,6 @@ Player.prototype.update = function() {
     Entity.prototype.update.call(this);
 };
 
-Player.prototype.updateGraphics = function() {
+Enemy.prototype.updateGraphics = function() {
     Entity.prototype.updateGraphics.call(this);
 }
