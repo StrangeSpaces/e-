@@ -16,9 +16,10 @@ var resources = null;
 var entities = [];
 
 var currentLevel = 0;
+var scaleFactor;
 
 function resizeHandler() {
-  var scaleFactor = Math.min(
+  scaleFactor = Math.min(
     Math.floor(window.innerWidth / logicalWidth),
     Math.floor(window.innerHeight / logicalHeight)
   ) || 1;

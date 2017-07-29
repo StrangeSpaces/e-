@@ -1,4 +1,5 @@
 var tiles = TileMaps['start']['layers'][0]['data'];
+var tileMapWidth = TileMaps['start']['width'];
 
 var Tilemap = {
     tileSize: 16,
@@ -59,6 +60,6 @@ var Tilemap = {
     },
 
     getTile: function(x, y) {
-        return tiles[y * 20 + x];
+        return tiles[y * tileMapWidth + x];
     }
 }
