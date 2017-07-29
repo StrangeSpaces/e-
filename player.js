@@ -58,7 +58,7 @@ Player.prototype.update = function() {
         if (Key.isDown(Key.UP)) {
             this.queueJump = true;
         }
-        if (this.walkCycle <= -8) {
+        if (this.walkCycle <= -8 - (1 - this.energy) * 24) {
             if (this.queueJump) {
                 this.queueJump = false;
                 this.jump();
@@ -72,6 +72,7 @@ Player.prototype.update = function() {
                 this.energy += 0.02;
             }
             this.energy -= 0.02;
+            if (this.energy < 0) this.energy = 0;
         }
     }
 
@@ -84,7 +85,7 @@ Player.prototype.update = function() {
         }
     } else if (walkableStates.includes(this.state)) {
         if (this.walkCycle > 0) {
-            this.vel.x = (1 + this.energy/2) * this.dir;
+            this.vel.x = (1.5) * this.dir;
         } else {
             this.vel.x = 0;
         }
