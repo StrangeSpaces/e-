@@ -68,7 +68,7 @@ Player.prototype.jump = function() {
 }
 
 Player.prototype.attack = function() {
-    this.attkDur = Math.ceil(-(1 - this.energy) * 24);
+    this.attkDur = -106;
     this.state = this.state == CROUCH ? CROUCH_ATTK : NORM_ATTK;
     this.frameNumber = this.state == CROUCH_ATTK ? 32 : 20;
 
@@ -211,13 +211,18 @@ Player.prototype.update = function() {
     } else if (this.state == NORM_ATTK) {
         this.attkDur++;
 
-        if (this.attkDur == 12) {
+        if (this.attkDur == -100) {
+            this.frameNumber++;
+            this.attkDur = Math.ceil(-(1 - this.energy) * 24);
+        }
+
+        if (this.attkDur == 6) {
             this.addBox(new Box(this, 12 * this.dir, -6, 22 * this.dir, 4))
-        } else if (this.attkDur == 24) {
+        } else if (this.attkDur == 18) {
             this.boxes.length = 1;
         }
 
-        if (this.attkDur == 6 * 6) {
+        if (this.attkDur == 5 * 6) {
             this.state = IDLE;
             this.frameNumber = 0;
             this.walkCycle = -100;
@@ -227,13 +232,18 @@ Player.prototype.update = function() {
     } else if (this.state == CROUCH_ATTK) {
         this.attkDur++;
 
-        if (this.attkDur == 12) {
+        if (this.attkDur == -100) {
+            this.frameNumber++;
+            this.attkDur = Math.ceil(-(1 - this.energy) * 24);
+        }
+
+        if (this.attkDur == 6) {
             this.addBox(new Box(this, 12 * this.dir, 4, 22 * this.dir, 4))
-        } else if (this.attkDur == 24) {
+        } else if (this.attkDur == 18) {
             this.boxes.length = 1;
         }
 
-        if (this.attkDur == 6 * 6) {
+        if (this.attkDur == 5 * 6) {
             this.state = CROUCH;
             this.frameNumber = 28;
             this.walkCycle = -100;
