@@ -11,8 +11,10 @@ var JUMPING = 3;
 var JUMP_LAND = 4;
 var AIR_DASH = 5;
 var NORM_ATTK = 6;
+var CROUCH = 7;
+var CROUCH_ATTK = 8;
 
-var walkableStates = [IDLE, WALKING];
+var walkableStates = [IDLE, WALKING, CROUCH];
 
 function Player() {
     Entity.call(this, 'eneg', 80, 64);
@@ -29,6 +31,8 @@ function Player() {
     this.offset.y = -17;
 
     this.energy = 1;
+
+    this.addBox();
 };
 
 Player.prototype.hitGround = function() {
@@ -47,7 +51,7 @@ Player.prototype.hitGround = function() {
 Player.prototype.step = function() {
     if (this.walkCycle <= 0) {
         this.walkCycle = 18;
-        if (this.frameNumber == 0) {
+        if (this.state != WALKING) {
             this.frameNumber = 4;
         } else {
             this.frameNumber++;
@@ -65,8 +69,8 @@ Player.prototype.jump = function() {
 
 Player.prototype.attack = function() {
     this.attkDur = Math.ceil(-(1 - this.energy) * 24);
-    this.state = NORM_ATTK;
-    this.frameNumber = 20;
+    this.state = this.state == CROUCH ? CROUCH_ATTK : NORM_ATTK;
+    this.frameNumber = this.state == CROUCH_ATTK ? 32 : 20;
 
     if (Key.isDown(Key.RIGHT)) {
         this.sprite.scale.x = 1;
@@ -99,6 +103,10 @@ Player.prototype.update = function() {
             this.queueAttack = false;
             this.attack();
             this.energyLost();
+        } else if (Key.isDown(Key.DOWN)) {
+            this.state = CROUCH;
+            this.frameNumber = 28;
+            this.walkCycle = -100;
         } else if (this.walkCycle <= -8 - (1 - this.energy) * 24) {
             if (Key.isDown(Key.RIGHT)) {
                 this.sprite.scale.x = 1;
@@ -186,9 +194,32 @@ Player.prototype.update = function() {
         }
     } else if (this.state == NORM_ATTK) {
         this.attkDur++;
+
+        if (this.attkDur == 12) {
+            this.addBox(new Box(this, 12 * this.dir, -6, 22 * this.dir, 4))
+        } else if (this.attkDur == 24) {
+            this.boxes.length = 1;
+        }
+
         if (this.attkDur == 6 * 6) {
             this.state = IDLE;
             this.frameNumber = 0;
+            this.walkCycle = -100;
+        } else if (this.attkDur > 0 && this.attkDur % 6 == 0) {
+            this.frameNumber++;
+        }
+    } else if (this.state == CROUCH_ATTK) {
+        this.attkDur++;
+
+        if (this.attkDur == 12) {
+            this.addBox(new Box(this, 12 * this.dir, 4, 22 * this.dir, 4))
+        } else if (this.attkDur == 24) {
+            this.boxes.length = 1;
+        }
+
+        if (this.attkDur == 6 * 6) {
+            this.state = CROUCH;
+            this.frameNumber = 28;
             this.walkCycle = -100;
         } else if (this.attkDur > 0 && this.attkDur % 6 == 0) {
             this.frameNumber++;
@@ -199,7 +230,9 @@ Player.prototype.update = function() {
 
     this.collided = false;
 
+    this.halfWidth = 8;
     Entity.prototype.update.call(this);
+    if (this.attkDur >= 12 && this.attkDur < 24) this.halfWidth = 32;
 
     if (!this.collided && this.state != JUMPING && this.state != AIR_DASH) {
         this.state = JUMPING;

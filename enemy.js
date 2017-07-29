@@ -1,8 +1,6 @@
 Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.parent = Entity.prototype;
 
-var walkableStates = [IDLE, WALKING];
-
 function Enemy() {
     Entity.call(this, 'test', 16, 16);
 
@@ -89,8 +87,6 @@ Enemy.prototype.updateGraphics = function() {
 Bouncer.prototype = Object.create(Enemy.prototype);
 Bouncer.prototype.parent = Enemy.prototype;
 
-var walkableStates = [IDLE, WALKING];
-
 function Bouncer() {
     Entity.call(this, 'test', 16, 16);
 
@@ -106,6 +102,8 @@ function Bouncer() {
     this.startX = this.pos.x;
     this.vel.x = 0.5;
     this.endX = this.pos.x + 100;
+
+    this.addBox();
 };
 
 Bouncer.prototype.hitGround = function() {

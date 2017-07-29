@@ -62,6 +62,13 @@ function animate() {
 
     collision();
 
+    entities = entities.filter(function( obj ) {
+        if (obj.dead) {
+            currentContainer.removeChild(obj.sprite);
+        }
+        return !obj.dead;
+    });
+
     renderer.render(stage);
 
     // start the timer for the next animation loop

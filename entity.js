@@ -29,11 +29,34 @@ var ENEMY = 2;
 
 var runningID = 0;
 
+
+function Box(entity, x, y, width, height) {
+    this.ent = entity;
+
+    if (width < 0) {
+        x = x + width;
+        width = -width;
+    }
+
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+}
+
+Box.prototype.collide = function(other) {
+    return (this.ent.pos.x + this.x < other.ent.pos.x + other.x + other.width &&
+            this.ent.pos.y + this.y < other.ent.pos.y + other.y + other.height &&
+            this.ent.pos.x + this.x + this.width > other.ent.pos.x + other.x  &&
+            this.ent.pos.y + this.y + this.height > other.ent.pos.y + other.y)
+}
+
 function Entity(file, width, height) {
     this.pos = new Vec(15, 15);
     this.vel = new Vec(0, 0);
     this.offset = new Vec(0, 0);
 
+    this.boxes = [];
     this.height = 0;
 
     this.id = ++runningID;
@@ -56,6 +79,13 @@ function Entity(file, width, height) {
     this.halfHeight = height / 2;
 }
 
+Entity.prototype.addBox = function(box) {
+    if (!box) {
+        box = new Box(this, -this.halfWidth, -this.halfHeight, this.halfWidth * 2, this.halfHeight * 2);
+    }
+    this.boxes.push(box);
+}
+
 Entity.prototype.top = function() {
     return this.pos.y - this.halfHeight;
 }
@@ -73,10 +103,15 @@ Entity.prototype.right = function() {
 }
 
 Entity.prototype.collide = function(other) {
-    return (this.top() < other.bot() &&
-            this.left() < other.right() &&
-            this.bot() > other.top() &&
-            this.right() > other.left());
+    for (var i = this.boxes.length - 1; i >= 0; i--) {
+        for (var t = other.boxes.length - 1; t >= 0; t--) {
+            if (this.boxes[i].collide(other.boxes[t])) {
+                return [i, t];
+            }
+        }
+    }
+
+    return null;
 }
 
 Entity.prototype.updateGraphics = function() {

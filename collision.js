@@ -6,13 +6,15 @@ var CollisionHandler = {
             var h = this.handles[i];
 
             if (h[0] == a.type && h[1] == b.type) {
-                if (a.collide(b)) {
-                    h[2](a, b);
+                var boxes = a.collide(b)
+                if (boxes) {
+                    h[2](a, b, boxes);
                 }
                 return;
             } else if (h[1] == a.type && h[0] == b.type) {
-                if (a.collide(b)) {
-                    h[2](b, a);
+                var boxes = b.collide(a)
+                if (boxes) {
+                    h[2](b, a, boxes);
                 }
                 return;
             }
@@ -20,6 +22,8 @@ var CollisionHandler = {
     }
 }
 
-CollisionHandler.handles.push([PLAYER, PLAYER, function(a, b) {
-    a.pos.y -= a.vel.y;
+CollisionHandler.handles.push([PLAYER, ENEMY, function(player, enemy, boxes) {
+    if (boxes[0] > 0) {
+        enemy.dead = true;
+    }
 }]);
