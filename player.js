@@ -22,12 +22,16 @@ function Player() {
 
     this.pos.y = 100;
     this.halfWidth = 8;
+    this.halfHeight = 15;
+
+    this.offset.y = -9;
 
     this.energy = 1;
 };
 
 Player.prototype.hitGround = function() {
     this.vel.y = 0;
+    this.collided = true;
 
     if (this.state == JUMPING) {
         this.state = JUMP_LAND;
@@ -47,6 +51,7 @@ Player.prototype.step = function() {
             if (this.frameNumber == 12) this.frameNumber = 4;
         }
     }
+    this.state = WALKING;
 }
 
 Player.prototype.jump = function() {
@@ -55,16 +60,22 @@ Player.prototype.jump = function() {
     this.frameNumber = 12;
 }
 
+Player.prototype.energyLost = function() {
+    this.energy -= 0.02;
+    if (this.energy < 0) this.energy = 0;
+}
+
 Player.prototype.update = function() {
     if (walkableStates.includes(this.state)) {
         if (Key.isDown(Key.UP)) {
             this.queueJump = true;
         }
-        if (this.walkCycle <= -8 - (1 - this.energy) * 24) {
-            if (this.queueJump) {
-                this.queueJump = false;
-                this.jump();
-            } else if (Key.isDown(Key.RIGHT)) {
+        if (this.walkCycle < 0 && this.queueJump) {
+            this.queueJump = false;
+            this.jump();
+            this.energyLost();
+        } else if (this.walkCycle <= -8 - (1 - this.energy) * 24) {
+            if (Key.isDown(Key.RIGHT)) {
                 this.sprite.scale.x = 1;
                 this.dir = RIGHT;
                 this.step();
@@ -75,9 +86,9 @@ Player.prototype.update = function() {
             } else {
                 this.energy += 0.02;
                 this.frameNumber = 0;
+                this.state = IDLE;
             }
-            this.energy -= 0.02;
-            if (this.energy < 0) this.energy = 0;
+            this.energyLost();
         }
     }
 
@@ -114,19 +125,29 @@ Player.prototype.update = function() {
     } else if (this.state == JUMPING) {
         this.jumpPause++;
         if (this.jumpPause % 9 == 0) this.frameNumber++;
+        if (this.frameNumber > 17) this.frameNumber = 17;
     } else if (this.state == JUMP_LAND) {
         this.jumpPause++;
         if (this.jumpPause == 18) {
             this.frameNumber = 0;
             this.state = IDLE;
-        } else if (this.jumpPause % 9 == 0) {
+            this.walkCycle = -100;
+        } else if (this.jumpPause == 9) {
             this.frameNumber++;
         }
     }
 
     this.vel.y += 0.25;
 
+    this.collided = false;
+
     Entity.prototype.update.call(this);
+
+    if (!this.collided && this.state != JUMPING) {
+        this.state = JUMPING;
+        this.jumpPause = 0;
+        this.frameNumber = 15;
+    }
 };
 
 Player.prototype.updateGraphics = function() {
