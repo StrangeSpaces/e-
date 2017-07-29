@@ -165,6 +165,16 @@ Player.prototype.update = function() {
             if (this.walkCycle == 9) {
                 this.frameNumber++;
             }
+            if (Key.isDown(Key.RIGHT)) {
+            } else if (Key.isDown(Key.LEFT)) {
+            } else {
+                this.walkCycle = 0;
+                if (this.frameNumber < 6) {
+                    this.frameNumber = 6;
+                } else {
+                    this.frameNumber = 10;
+                }
+            }
         } else {
             this.vel.x = 0;
             if (this.walkCycle == 0) {
