@@ -53,14 +53,6 @@ Player.prototype.jump = function() {
     this.jumpPause = 10;
     this.state = JUMP_SQUAT;
     this.frameNumber = 12;
-
-    if (Key.isDown(Key.RIGHT)) {
-        this.exitVelocity = 1;
-    } else if (Key.isDown(Key.LEFT)) {
-        this.exitVelocity = -1;
-    } else {
-        this.exitVelocity = 0;
-    }
 }
 
 Player.prototype.update = function() {
@@ -92,9 +84,16 @@ Player.prototype.update = function() {
     if (this.state == JUMP_SQUAT) {
         this.jumpPause--;
         if (this.jumpPause == 0) {
+            if (Key.isDown(Key.RIGHT)) {
+                this.vel.x = 1;
+            } else if (Key.isDown(Key.LEFT)) {
+                this.vel.x = -1;
+            } else {
+                this.vel.x = 0;
+            }
+
             this.state = JUMPING;
-            this.vel.y = -5;
-            this.vel.x = this.exitVelocity;
+            this.vel.y = -6;
             this.frameNumber = 13;
         }
     } else if (walkableStates.includes(this.state)) {
