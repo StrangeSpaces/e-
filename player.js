@@ -98,7 +98,7 @@ Player.prototype.update = function() {
         }
     } else if (walkableStates.includes(this.state)) {
         if (this.walkCycle > 0) {
-            this.vel.x = (0.75) * this.dir;
+            this.vel.x = 16/18 * this.dir;
             if (this.walkCycle == 9) {
                 this.frameNumber++;
             }
