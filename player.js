@@ -176,7 +176,6 @@ Player.prototype.update = function() {
                 }
             }
         } else {
-            this.vel.x = 0;
             if (this.walkCycle == 0) {
                 this.frameNumber++;
             } else if (this.walkCycle == -4) {
@@ -184,6 +183,7 @@ Player.prototype.update = function() {
             }
         }
         this.walkCycle--;
+        if (this.walkCycle <= 0) this.vel.x = 0;
     } else if (this.state == JUMPING) {
         this.jumpPause++;
         if (this.jumpPause % 9 == 0) this.frameNumber++;

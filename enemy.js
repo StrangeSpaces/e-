@@ -28,7 +28,7 @@ Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.parent = Entity.prototype;
 
 function Enemy() {
-    Entity.call(this, 'test', 16, 16);
+    Entity.call(this, 'rust', 32, 32);
 
     this.type = ENEMY;
     this.walkCycle = 0;
@@ -36,78 +36,40 @@ function Enemy() {
     this.dir = RIGHT;
 
     this.state = IDLE;
+    this.f = 0;
 
     this.pos.y = 160;
+    this.pos.x = 100;
 
     this.startX = this.pos.x;
     this.endX = this.pos.x + 100;
+
+    this.halfHeight = 8;
+    this.halfWidth = 9;
+    this.offset.y = -8;
+
+    this.addBox();
 };
 
-Enemy.prototype.hitGround = function() {
-    this.vel.y = 0;
-
-    if (this.state == JUMPING) {
-        this.state = IDLE;
-    }
-}
-
-Enemy.prototype.step = function() {
-    if (this.walkCycle <= 0) {
-        this.walkCycle = 16;
-    }
-}
-
-Enemy.prototype.jump = function() {
-    this.jumpPause = 10;
-    this.state = JUMP_SQUAT;
-
-    if (Key.isDown(Key.RIGHT)) {
-        this.exitVelocity = 1;
-    } else if (Key.isDown(Key.LEFT)) {
-        this.exitVelocity = -1;
-    } else {
-        this.exitVelocity = 0;
-    }
-}
-
 Enemy.prototype.update = function() {
-    if (walkableStates.includes(this.state)) {
-        if (this.walkCycle <= 0) {
-            if (this.pos.x <= this.startX) {
-                this.dir = RIGHT;
-            } else if (this.pos.x >= this.endX) {
-                this.dir = LEFT;
-            }
-            this.step();
-        }
+    this.f++;
+    if (this.f % 9 == 0) {
+        this.frameNumber = (this.frameNumber + 1) % 4;
     }
 
-    if (this.state == JUMP_SQUAT) {
-        this.jumpPause--;
-        if (this.jumpPause == 0) {
-            this.state = JUMPING;
-            this.vel.y = -8;
-            this.vel.x = this.exitVelocity;
-        }
-    } else if (walkableStates.includes(this.state)) {
-        if (this.walkCycle > 8) {
-            this.vel.x = 1 * this.dir;
-        } else {
-            this.vel.x = 0;
-        }
-        this.walkCycle--;
+    if (this.pos.x <= this.startX) {
+        this.vel.x = 0.5;
+        this.dir = RIGHT;
+    } else if (this.pos.x >= this.endX) {
+        this.vel.x = -0.5;
+        this.dir = LEFT;
     }
 
     this.vel.y += 0.5;
 
+    this.sprite.scale.x = -this.dir;
     Entity.prototype.update.call(this);
 };
-
-Enemy.prototype.updateGraphics = function() {
-    Entity.prototype.updateGraphics.call(this);
-}
-
-
 
 
 Bouncer.prototype = Object.create(Enemy.prototype);
