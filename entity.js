@@ -86,6 +86,7 @@ function Entity(file, width, height) {
 
 Entity.prototype.addBox = function(box) {
     if (!box) {
+        console.log(this.halfHeight);
         box = new Box(this, -this.halfWidth, -this.halfHeight, this.halfWidth * 2, this.halfHeight * 2);
     }
     this.boxes.push(box);

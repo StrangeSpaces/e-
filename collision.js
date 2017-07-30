@@ -64,7 +64,7 @@ CollisionHandler.handles.push([PLAYER, SAW, function(player, saw, boxes) {
 
     if (boxes[0] > 0) {
         saw.struck = true;
-        saw.vel.x = -Math.sign(saw.vel.x) * 3;
+        saw.vel.x = player.dir * 3;
         saw.vel.y = 0;
         saw.arc = false;
     } else {

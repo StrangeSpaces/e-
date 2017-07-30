@@ -121,18 +121,23 @@ Chucker.prototype = Object.create(Enemy.prototype);
 Chucker.prototype.parent = Enemy.prototype;
 
 function Chucker() {
-    this.halfHeight = 16;
     this.halfWidth = 16;
+    this.halfHeight = 8;
 
     Enemy.call(this, 'saw', 32, 32);
 
+    console.log(this.type);
+
     this.vel.x = 0;
+    this.offset.y = -8;
 
     this.fn = 0;
 };
 
 
 Chucker.prototype.update = function() {
+    this.vel.y += 0.5
+
     if (player.pos.x > this.pos.x) {
         this.dir = 1;
     } else {
@@ -144,7 +149,7 @@ Chucker.prototype.update = function() {
         this.shoot();
     } else if (this.f % 120 < 12) {
         this.fn = 1;
-    } else if (this.f % 120 < 96) {
+    } else if (this.f % 120 > 96) {
         this.fn = 1;
     } else if (this.f % 120 > 108) {
         this.fn = 0;
@@ -163,14 +168,14 @@ Chucker.prototype.shoot = function() {
         saw.vel.y = -2.5;
 
         saw.pos.x = this.pos.x + 2 * this.dir;
-        saw.pos.y = this.pos.y + 4;
+        saw.pos.y = this.pos.y + -4;
     } else {
         saw.vel.x = 2;
         saw.vel.y = 0;
         saw.arc = false;
 
         saw.pos.x = this.pos.x + 4 * this.dir;
-        saw.pos.y = this.pos.y + 6;
+        saw.pos.y = this.pos.y + -2;
     }
     saw.vel.x *= this.dir;
 

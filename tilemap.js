@@ -1,9 +1,11 @@
-var tiles = TileMaps['start']['layers'][1]['data'];
-var bg = TileMaps['start']['layers'][0]['data'];
-var placement = TileMaps['start']['layers'][2]['data'];
-var tileMapWidth = TileMaps['start']['width'];
-var tileMapHeight = TileMaps['start']['height'];
-var cols = TileMaps['start']['tilesets'][0]['columns']
+var level = 'start';
+
+var tiles = TileMaps[level]['layers'][1]['data'];
+var bg = TileMaps[level]['layers'][0]['data'];
+var placement = TileMaps[level]['layers'][2]['data'];
+var tileMapWidth = TileMaps[level]['width'];
+var tileMapHeight = TileMaps[level]['height'];
+var cols = TileMaps[level]['tilesets'][0]['columns']
 
 var Tilemap = {
     tileSize: 16,
