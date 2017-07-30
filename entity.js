@@ -27,6 +27,7 @@ var ENTITY = 0;
 var PLAYER = 1;
 var ENEMY = 2;
 var ENERGY = 3;
+var SAW = 4;
 
 var runningID = 0;
 
@@ -76,8 +77,10 @@ function Entity(file, width, height) {
         this.con = currentContainer;
     }
 
-    this.halfWidth = width / 2;
-    this.halfHeight = height / 2;
+    if (!this.halfWidth) {
+        this.halfWidth = width / 2;
+        this.halfHeight = height / 2;
+    }
 }
 
 Entity.prototype.addBox = function(box) {

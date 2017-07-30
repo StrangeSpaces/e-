@@ -36,7 +36,9 @@ function Player() {
 
     this.damaged = 0;
 
+    this.halfWidth = 6;
     this.addBox();
+    this.halfWidth = 8;
 };
 
 Player.prototype.hitGround = function() {

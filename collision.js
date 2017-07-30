@@ -58,3 +58,22 @@ CollisionHandler.handles.push([PLAYER, ENERGY, function(player, energy, boxes) {
         energy.pos.y += dif.y;
     }
 }]);
+
+CollisionHandler.handles.push([PLAYER, SAW, function(player, saw, boxes) {
+    if (saw.struck) return;
+
+    if (boxes[0] > 0) {
+        saw.struck = true;
+        saw.vel.x = -saw.vel.x;
+    } else {
+        player.damage();
+        saw.dead = true;
+    }
+}]);
+
+CollisionHandler.handles.push([SAW, ENEMY, function(saw, enemy, boxes) {
+    if (!saw.struck) return;
+
+    saw.dead = true;
+    enemy.dead = true;
+}]);
