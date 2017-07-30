@@ -31,6 +31,9 @@ function Player() {
     this.offset.y = -17;
 
     this.energy = 1;
+    this.hp = 3;
+
+    this.damaged = 0;
 
     this.addBox();
 };
@@ -65,6 +68,15 @@ Player.prototype.jump = function() {
     this.jumpPause = 6 + Math.ceil((1 - this.energy) * 24);
     this.state = JUMP_SQUAT;
     this.frameNumber = 12;
+    this.vel.x = 0;
+}
+
+Player.prototype.damage = function() {
+    if (this.damaged <= 0) {
+        console.log(this.hp);
+        this.hp--;
+        this.damaged = 60;
+    }
 }
 
 Player.prototype.attack = function() {
@@ -86,7 +98,7 @@ Player.prototype.energyLost = function() {
     if (this.energy < 0) this.energy = 0;
 }
 
-Player.prototype.update = function() {
+Player.prototype.input = function() {
     if (walkableStates.includes(this.state)) {
         if (Key.isDown(Key.P)) {
             this.queueAttack = true;
@@ -95,18 +107,30 @@ Player.prototype.update = function() {
             this.queueJump = true;
         }
 
-        if (this.walkCycle < 0 && this.queueJump) {
+        if (this.queueJump) {
             this.queueJump = false;
             this.jump();
             this.energyLost();
-        } else if (this.walkCycle < 0 && this.queueAttack) {
-            this.queueAttack = false;
-            this.attack();
-            this.energyLost();
-        } else if (this.walkCycle < 0 && Key.isDown(Key.DOWN)) {
-            this.state = CROUCH;
-            this.frameNumber = 28;
-        } else if (this.walkCycle <= -4 - (1 - this.energy) * 24) {
+            return
+        }
+
+        if (this.walkCycle < 0) {
+            var done = false;
+            if (Key.isDown(Key.DOWN)) {
+                this.state = CROUCH;
+                this.frameNumber = 28;
+                done = true;
+            } 
+            if (this.queueAttack) {
+                this.queueAttack = false;
+                this.attack();
+                this.energyLost();
+                return
+            }
+            if (done) return
+        }
+
+        if (this.walkCycle <= -4 - (1 - this.energy) * 24) {
             if (Key.isDown(Key.RIGHT)) {
                 this.sprite.scale.x = 1;
                 this.dir = RIGHT;
@@ -123,6 +147,10 @@ Player.prototype.update = function() {
             this.energyLost();
         }
     }
+}
+
+Player.prototype.update = function() {
+    this.input();
 
     if (this.state == JUMP_SQUAT) {
         this.jumpPause--;
@@ -232,6 +260,7 @@ Player.prototype.update = function() {
         }
     }
     this.walkCycle--;
+    this.damaged--;
 
     if (this.state != AIR_DASH) this.vel.y += 0.25;
 
@@ -243,6 +272,7 @@ Player.prototype.update = function() {
 
     if (!this.collided && this.state != JUMPING && this.state != AIR_DASH) {
         this.state = JUMPING;
+        this.queueJump = false;
         this.jumpPause = 0;
         this.frameNumber = 15;
         this.canDash = false;
@@ -257,7 +287,21 @@ Player.prototype.updateGraphics = function() {
     currentContainer.position.x += dif.x;
     currentContainer.position.y += dif.y;
 
+    if (currentContainer.position.x > 0) {
+        currentContainer.position.x = 0; 
+    } 
+    if (currentContainer.position.x < (tileMapWidth * 16 - logicalWidth) * -scaleFactor){
+        currentContainer.position.x = (tileMapWidth * 16 - logicalWidth) * -scaleFactor;
+    }
+    if (currentContainer.position.y > 0) {
+        currentContainer.position.y = 0; 
+    } 
+    if (currentContainer.position.y < (tileMapHeight * 16 - logicalHeight) * -scaleFactor){
+        currentContainer.position.y = (tileMapHeight * 16 - logicalHeight) * -scaleFactor;
+    }
+
     power.texture.frame = new PIXI.Rectangle(0, 32, 7 + Math.ceil(this.energy * 10) * 4, 32);
+    heart.texture.frame = new PIXI.Rectangle(0, 64, 14 + this.hp * 11, 32);
 
     Entity.prototype.updateGraphics.call(this);
 }

@@ -38,6 +38,8 @@ CollisionHandler.handles.push([PLAYER, ENEMY, function(player, enemy, boxes) {
             eng.vel.x = dx/5;
             eng.vel.y = random(-2, -1.5)
         }
+    } else {
+        player.damage();
     }
 }]);
 
