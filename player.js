@@ -87,7 +87,7 @@ Player.prototype.attack = function() {
         this.frameNumber = 32;
     } else if (this.state == JUMPING) {
         this.state = AIR_ATK;
-        this.frameNumber = 20;
+        this.frameNumber = 40;
     } else {
         this.state = NORM_ATTK;
         this.frameNumber = 20;
