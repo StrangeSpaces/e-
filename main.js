@@ -10,6 +10,7 @@ var rightEnts = [];
 var renderer = null;
 var stage = null;
 var mainContainer = null;
+var frontContainer = null;
 
 var resources = null;
 
@@ -37,6 +38,7 @@ function resizeHandler() {
   renderer.resize(newWidth, newHeight);
   mainContainer.scale.set(scaleFactor); 
   uiContainer.scale.set(scaleFactor);
+  frontContainer.scale.set(scaleFactor);
 };
 
 function quadCollision() {
@@ -87,6 +89,9 @@ function loadLevel() {
     Tilemap.init();
 
     player = new Player();
+
+    player.pos.x = SX;
+    player.pos.y = SY;
     entities.push(player);
 
     border = new PIXI.Sprite(new PIXI.Texture(resources['ui'].texture, new PIXI.Rectangle(0, 0, 48, 32)));
@@ -101,6 +106,8 @@ function loadLevel() {
 
 function start() {
     mainContainer.removeChildren();
+    frontContainer.removeChildren();
+    uiContainer.removeChildren();
 
     loadLevel();
 };
@@ -118,7 +125,9 @@ function init() {
   stage = new PIXI.Container();
   mainContainer = new PIXI.Container();
   uiContainer = new PIXI.Container();
+  frontContainer = new PIXI.Container();
   stage.addChild(mainContainer);
+  stage.addChild(frontContainer);
   stage.addChild(uiContainer);
   
   document.body.appendChild(renderer.view);

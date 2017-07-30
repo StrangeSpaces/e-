@@ -1,8 +1,9 @@
-var level = 'start';
+var level = 'DaringLeaps';
 
 var tiles = TileMaps[level]['layers'][1]['data'];
 var bg = TileMaps[level]['layers'][0]['data'];
 var placement = TileMaps[level]['layers'][2]['data'];
+var fg = TileMaps[level]['layers'][3]['data'];
 var tileMapWidth = TileMaps[level]['width'];
 var tileMapHeight = TileMaps[level]['height'];
 var cols = TileMaps[level]['tilesets'][0]['columns']
@@ -13,12 +14,17 @@ var Tilemap = {
     init: function() {
         for (var y = 0; y < tileMapHeight; y++) {
             for (var x = 0; x < tileMapWidth; x++) {
-                this.place(bg[y * tileMapWidth + x] - 1, x, y);
+                this.place(bg[y * tileMapWidth + x] - 1, x, y, currentContainer);
             }
         }
         for (var y = 0; y < tileMapHeight; y++) {
             for (var x = 0; x < tileMapWidth; x++) {
-                this.place(tiles[y * tileMapWidth + x] - 1, x, y);
+                this.place(tiles[y * tileMapWidth + x] - 1, x, y, currentContainer);
+            }
+        }
+        for (var y = 0; y < tileMapHeight; y++) {
+            for (var x = 0; x < tileMapWidth; x++) {
+                this.place(fg[y * tileMapWidth + x] - 1, x, y, frontContainer);
             }
         }
         for (var y = 0; y < tileMapHeight; y++) {
@@ -27,6 +33,9 @@ var Tilemap = {
                 var entity = null;
                 if (ent == 16) {
                     entity = new Chucker();
+                } else if (ent == 25) {
+                    SX = x * 16 + 8;
+                    SY = y * 16;
                 }
 
                 if (entity) {
@@ -39,7 +48,7 @@ var Tilemap = {
         }
     },
 
-    place(f, x, y) {
+    place(f, x, y, con) {
         if (f >= 0) {
             var frame = new PIXI.Rectangle(f % cols * 16, Math.floor(f / cols) * 16, this.tileSize, this.tileSize);
             var sprite = new PIXI.Sprite(new PIXI.Texture(resources['tiles'].texture, frame));
@@ -50,7 +59,7 @@ var Tilemap = {
             sprite.position.x = (x+0.5) * this.tileSize;
             sprite.position.y = (y+0.5) * this.tileSize;
 
-            currentContainer.addChild(sprite);
+            con.addChild(sprite);
         }
     },
 

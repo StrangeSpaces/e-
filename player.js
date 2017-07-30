@@ -335,6 +335,9 @@ Player.prototype.updateGraphics = function() {
         currentContainer.position.y = (tileMapHeight * 16 - logicalHeight) * -scaleFactor;
     }
 
+    frontContainer.position.x = currentContainer.position.x;
+    frontContainer.position.y = currentContainer.position.y;
+
     power.texture.frame = new PIXI.Rectangle(0, 32, 7 + Math.ceil(this.energy * 10) * 4, 32);
     heart.texture.frame = new PIXI.Rectangle(0, 64, 14 + this.hp * 11, 32);
 
