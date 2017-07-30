@@ -158,7 +158,7 @@ Chucker.prototype.shoot = function() {
 
     if (Math.abs(player.pos.y - this.pos.y) > 30) {
         saw.vel.x = 1;
-        saw.vel.y = -3;
+        saw.vel.y = -2.5;
     } else {
         saw.vel.x = 2;
         saw.vel.y = 0;
