@@ -17,6 +17,7 @@ var entities = [];
 
 var currentLevel = 0;
 var scaleFactor;
+var player;
 
 function random(min, max) {
   return Math.random() * (max - min) + min;
@@ -84,7 +85,9 @@ function loadLevel() {
     currentContainer = mainContainer;
 
     Tilemap.init();
-    entities.push(new Player());
+
+    player = new Player();
+    entities.push(player);
 
     border = new PIXI.Sprite(new PIXI.Texture(resources['ui'].texture, new PIXI.Rectangle(0, 0, 48, 32)));
     uiContainer.addChild(border);

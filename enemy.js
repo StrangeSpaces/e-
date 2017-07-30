@@ -138,7 +138,7 @@ Chucker.prototype.update = function() {
         this.frameNumber = (this.frameNumber + 1) % 4;
     }
 
-    if (this.f % 90 == 0) {
+    if (this.f % 120 == 0) {
         this.shoot();
     }
 
@@ -151,8 +151,20 @@ Chucker.prototype.shoot = function() {
     saw.pos.x = this.pos.x;
     saw.pos.y = this.pos.y;
 
-    saw.vel.x = -3;
-    saw.arc = false;
+    var dir = -1;
+    if (player.pos.x > this.pos.x) {
+        dir = 1;
+    }
+
+    if (Math.abs(player.pos.y - this.pos.y) > 30) {
+        saw.vel.x = 1;
+        saw.vel.y = -3;
+    } else {
+        saw.vel.x = 2;
+        saw.vel.y = 0;
+        saw.arc = false;
+    }
+    saw.vel.x *= dir;
 
     entities.push(saw);
 }
@@ -176,15 +188,17 @@ function Saw() {
     this.pos.x = 100
     this.type = SAW;
     this.arc = true;
+
+    this.moveThroughWalls = true;
 }
 
-Saw.prototype.hitWall = function() {
-    this.dead = true
-}
+// Saw.prototype.hitWall = function() {
+//     this.dead = true
+// }
 
-Saw.prototype.hitGround = function() {
-    this.dead = true
-}
+// Saw.prototype.hitGround = function() {
+//     this.dead = true
+// }
 
 Saw.prototype.update = function() {
     this.f++;
@@ -192,8 +206,10 @@ Saw.prototype.update = function() {
         this.frameNumber = (this.frameNumber + 1) % 8;
     }
 
-    if (this.arc) this.vel.y += 0.1;
+    if (this.arc) this.vel.y += 0.05;
 
     Entity.prototype.update.call(this);
+
+    if (this.pos.x < 0 || this.pos.y < 0 || this.pos.x > tileMapWidth * 16 || this.pos.y > tileMapHeight * 16) this.dead = true;
 }
 

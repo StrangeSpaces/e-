@@ -38,8 +38,15 @@ function Player() {
 
     this.halfWidth = 6;
     this.addBox();
-    this.halfWidth = 8;
 };
+
+Player.prototype.right = function() {
+    return this.dir == RIGHT ? this.pos.x + 12 : this.pos.x + 8;
+}
+
+Player.prototype.left = function() {
+    return this.dir == LEFT ? this.pos.x - 12 : this.pos.x - 8;
+}
 
 Player.prototype.hitGround = function() {
     this.vel.y = 0;
@@ -51,6 +58,7 @@ Player.prototype.hitGround = function() {
         this.jumpPause = 0;
         this.frameNumber = 18;
         this.vel.x = 0;
+        this.boxes.length = 1;
     }
 }
 
@@ -227,11 +235,6 @@ Player.prototype.update = function() {
                 this.frameNumber++;
             }
         }
-    } else if (this.state == AIR_DASH) {
-        this.airDashDuration--;
-        if (this.airDashDuration <= 0) {
-            this.state = JUMPING;
-        }
     } else if (this.state == NORM_ATTK) {
         this.attkDur++;
 
@@ -283,6 +286,7 @@ Player.prototype.update = function() {
         }
 
         if (this.attkDur == 6) {
+            console.log("BOOOOO");
             this.addBox(new Box(this, 12 * this.dir, -6, 22 * this.dir, 4))
         } else if (this.attkDur == 18) {
             this.boxes.length = 1;
@@ -302,9 +306,7 @@ Player.prototype.update = function() {
 
     this.collided = false;
 
-    this.halfWidth = 8;
     Entity.prototype.update.call(this);
-    if (this.attkDur >= 12 && this.attkDur < 24) this.halfWidth = 32;
 
     if (!this.collided && this.state != JUMPING && this.state != AIR_ATK) {
         this.state = JUMPING;

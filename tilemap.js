@@ -53,6 +53,8 @@ var Tilemap = {
     },
 
     check: function(entity, axis) {
+        if (entity.moveThroughWalls) return;
+
         var startX = Math.floor(entity.left() / this.tileSize);
         var startY = Math.floor(entity.top() / this.tileSize);
 
@@ -69,9 +71,9 @@ var Tilemap = {
 
                         if (axis == 0) {
                             if ((x+0.5) * this.tileSize - entity.pos.x > 0) {
-                                entity.pos.x = x * this.tileSize - entity.halfWidth;
+                                entity.pos.x += x * this.tileSize - entity.right();
                             } else {
-                                entity.pos.x = (x+1) * this.tileSize + entity.halfWidth;
+                                entity.pos.x += (x+1) * this.tileSize - entity.left();
                             }
                             entity.hitWall();
                         } else {

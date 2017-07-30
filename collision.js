@@ -64,7 +64,9 @@ CollisionHandler.handles.push([PLAYER, SAW, function(player, saw, boxes) {
 
     if (boxes[0] > 0) {
         saw.struck = true;
-        saw.vel.x = -saw.vel.x;
+        saw.vel.x = -Math.sign(saw.vel.x) * 3;
+        saw.vel.y = 0;
+        saw.arc = false;
     } else {
         player.damage();
         saw.dead = true;
@@ -76,4 +78,17 @@ CollisionHandler.handles.push([SAW, ENEMY, function(saw, enemy, boxes) {
 
     saw.dead = true;
     enemy.dead = true;
+
+    for (var i = 0; i < 4; i++) {
+        var eng = new Energy();
+        entities.push(eng);
+
+        var dx = random(-5, 5)
+
+        eng.pos.x = enemy.pos.x + dx;
+        eng.pos.y = enemy.pos.y;
+
+        eng.vel.x = dx/5;
+        eng.vel.y = random(-2, -1.5)
+    }
 }]);
