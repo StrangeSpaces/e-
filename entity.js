@@ -138,6 +138,9 @@ Entity.prototype.hitGround = function() {
     this.vel.y = 0;
 }
 
+Entity.prototype.hitWall = function() {
+}
+
 Entity.prototype.friction = function(amount) {
     if (Math.abs(this.vel.x) < amount) {
         this.vel.x = 0;

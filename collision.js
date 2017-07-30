@@ -36,7 +36,7 @@ CollisionHandler.handles.push([PLAYER, ENEMY, function(player, enemy, boxes) {
             eng.pos.y = enemy.pos.y;
 
             eng.vel.x = dx/5;
-            eng.vel.y = random(-1, -0.5)
+            eng.vel.y = random(-2, -1.5)
         }
     }
 }]);
@@ -44,7 +44,15 @@ CollisionHandler.handles.push([PLAYER, ENEMY, function(player, enemy, boxes) {
 CollisionHandler.handles.push([PLAYER, ENERGY, function(player, energy, boxes) {
     if (boxes[0] != 0) return;
 
-    energy.dead = true;
-    player.energy += 0.05;
-    if (player.energy > 1) player.energy = 1;
+    var dif = new Vec(player.pos.x - energy.pos.x, player.pos.y - energy.pos.y);
+
+    if (dif.length() < 8) {
+        energy.dead = true;
+        player.energy += 0.05;
+        if (player.energy > 1) player.energy = 1;
+    } else {
+        dif.setLength(1);
+        energy.pos.x += dif.x;
+        energy.pos.y += dif.y;
+    }
 }]);

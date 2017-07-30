@@ -24,7 +24,7 @@ function Player() {
     this.dir = RIGHT;
     this.state = IDLE;
 
-    this.pos.y = 100;
+    this.pos.y = 250;
     this.halfWidth = 8;
     this.halfHeight = 15;
 

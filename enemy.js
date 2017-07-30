@@ -34,18 +34,13 @@ function Enemy() {
     Entity.call(this, 'rust', 32, 32);
 
     this.type = ENEMY;
-    this.walkCycle = 0;
-
     this.dir = RIGHT;
+    this.vel.x = 0.5;
 
-    this.state = IDLE;
     this.f = 0;
 
     this.pos.y = 160;
     this.pos.x = 100;
-
-    this.startX = this.pos.x;
-    this.endX = this.pos.x + 100;
 
     this.halfHeight = 8;
     this.halfWidth = 9;
@@ -60,12 +55,9 @@ Enemy.prototype.update = function() {
         this.frameNumber = (this.frameNumber + 1) % 4;
     }
 
-    if (this.pos.x <= this.startX) {
-        this.vel.x = 0.5;
-        this.dir = RIGHT;
-    } else if (this.pos.x >= this.endX) {
-        this.vel.x = -0.5;
-        this.dir = LEFT;
+    if (Tilemap.getTile(Math.floor(this.pos.x / 16), Math.floor(this.pos.y / 16 + 1)) == 0) {
+        this.vel.x *= -1;
+        this.dir *= -1;
     }
 
     this.vel.y += 0.5;
@@ -74,6 +66,10 @@ Enemy.prototype.update = function() {
     Entity.prototype.update.call(this);
 };
 
+Enemy.prototype.hitWall = function() {
+    this.vel.x *= -1;
+    this.dir *= -1;
+}
 
 Bouncer.prototype = Object.create(Enemy.prototype);
 Bouncer.prototype.parent = Enemy.prototype;

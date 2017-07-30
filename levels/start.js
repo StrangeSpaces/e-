@@ -52,7 +52,7 @@
         {
          "columns":8,
          "firstgid":1,
-         "image":"e-\/imgs\/tiles.png",
+         "image":"..\/imgs\/tiles.png",
          "imageheight":48,
          "imagewidth":128,
          "margin":0,
