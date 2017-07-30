@@ -156,7 +156,7 @@ Player.prototype.update = function() {
 
             this.state = JUMPING;
             this.canDash = false;
-            this.vel.y = -6;
+            this.vel.y = Key.isDown(Key.UP) ? -6 : -4;
             this.frameNumber = 13;
         }
     } else if (walkableStates.includes(this.state)) {
