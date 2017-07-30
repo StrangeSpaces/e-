@@ -55,11 +55,10 @@ Player.prototype.hitGround = function() {
 Player.prototype.step = function() {
     if (this.walkCycle <= 0) {
         this.walkCycle = 18;
-        if (this.state != WALKING) {
+        if (this.state != WALKING || this.frameNumber >= 11) {
             this.frameNumber = 4;
         } else {
-            this.frameNumber++;
-            if (this.frameNumber >= 12) this.frameNumber = 4;
+            this.frameNumber = 8;
         }
     }
     this.state = WALKING;
@@ -166,8 +165,6 @@ Player.prototype.input = function() {
 
 Player.prototype.update = function() {
     this.input();
-
-    if (this.energy < 0.5) this.energy += 0.3;
 
     if (this.state == JUMP_SQUAT) {
         this.jumpPause--;
