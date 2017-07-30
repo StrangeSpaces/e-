@@ -35,6 +35,7 @@ function resizeHandler() {
 
   renderer.resize(newWidth, newHeight);
   mainContainer.scale.set(scaleFactor); 
+  uiContainer.scale.set(scaleFactor);
 };
 
 function quadCollision() {
@@ -84,6 +85,15 @@ function loadLevel() {
 
     Tilemap.init();
     entities.push(new Player());
+
+    border = new PIXI.Sprite(new PIXI.Texture(resources['ui'].texture, new PIXI.Rectangle(0, 0, 48, 32)));
+    uiContainer.addChild(border);
+
+    power = new PIXI.Sprite(new PIXI.Texture(resources['ui'].texture, new PIXI.Rectangle(0, 32, 48, 32)));
+    uiContainer.addChild(power);
+
+    heart = new PIXI.Sprite(new PIXI.Texture(resources['ui'].texture, new PIXI.Rectangle(0, 64, 48, 32)));
+    uiContainer.addChild(heart);
 }
 
 function start() {
@@ -104,7 +114,9 @@ function init() {
   
   stage = new PIXI.Container();
   mainContainer = new PIXI.Container();
+  uiContainer = new PIXI.Container();
   stage.addChild(mainContainer);
+  stage.addChild(uiContainer);
   
   document.body.appendChild(renderer.view);
   window.addEventListener('resize', resizeHandler, false);
@@ -114,6 +126,7 @@ function init() {
              .add('tiles', 'imgs/tiles.png')
              .add('energy', 'imgs/energy.png')
              .add('rust', 'imgs/rust.png')
+             .add('ui', 'imgs/ui.png')
              .add('eneg', 'imgs/eneg.png').load(function (loader, res) {
       resources = res;
 

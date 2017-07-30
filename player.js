@@ -257,5 +257,7 @@ Player.prototype.updateGraphics = function() {
     currentContainer.position.x += dif.x;
     currentContainer.position.y += dif.y;
 
+    power.texture.frame = new PIXI.Rectangle(0, 32, 7 + Math.ceil(this.energy * 10) * 4, 32);
+
     Entity.prototype.updateGraphics.call(this);
 }
