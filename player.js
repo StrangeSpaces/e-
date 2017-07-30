@@ -70,8 +70,8 @@ Player.prototype.step = function() {
         } else {
             this.frameNumber = 8;
         }
+        this.state = WALKING;
     }
-    this.state = WALKING;
 }
 
 Player.prototype.jump = function() {
@@ -244,7 +244,7 @@ Player.prototype.update = function() {
         }
 
         if (this.attkDur == 6) {
-            this.addBox(new Box(this, 12 * this.dir, -6, 22 * this.dir, 4))
+            this.addBox(new Box(this, 12 * this.dir, -5, 22 * this.dir, 2));
         } else if (this.attkDur == 18) {
             this.boxes.length = 1;
         }
@@ -265,7 +265,7 @@ Player.prototype.update = function() {
         }
 
         if (this.attkDur == 6) {
-            this.addBox(new Box(this, 12 * this.dir, 4, 22 * this.dir, 4))
+            this.addBox(new Box(this, 12 * this.dir, 5, 22 * this.dir, 2))
         } else if (this.attkDur == 18) {
             this.boxes.length = 1;
         }
@@ -286,8 +286,7 @@ Player.prototype.update = function() {
         }
 
         if (this.attkDur == 6) {
-            console.log("BOOOOO");
-            this.addBox(new Box(this, 12 * this.dir, -6, 22 * this.dir, 4))
+            this.addBox(new Box(this, 12 * this.dir, -5, 22 * this.dir, 2))
         } else if (this.attkDur == 18) {
             this.boxes.length = 1;
         }
@@ -301,8 +300,7 @@ Player.prototype.update = function() {
     }
     this.walkCycle--;
     this.damaged--;
-
-    if (this.state != AIR_DASH) this.vel.y += 0.25;
+    this.vel.y += 0.25;
 
     this.collided = false;
 

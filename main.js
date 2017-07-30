@@ -126,11 +126,13 @@ function init() {
   resizeHandler();
   
   PIXI.loader.add('test', 'imgs/test.png')
+             .add('saw', 'imgs/saw.png')
              .add('tiles', 'imgs/tiles.png')
              .add('energy', 'imgs/energy.png')
              .add('rust', 'imgs/rust.png')
              .add('ui', 'imgs/ui.png')
-             .add('eneg', 'imgs/eneg.png').load(function (loader, res) {
+             .add('eneg', 'imgs/eneg.png')
+             .add('ealpha', 'imgs/ealpha.png').load(function (loader, res) {
       resources = res;
 
       window.focus();

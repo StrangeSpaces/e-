@@ -28,6 +28,7 @@ var PLAYER = 1;
 var ENEMY = 2;
 var ENERGY = 3;
 var SAW = 4;
+var ALPHA = 5;
 
 var runningID = 0;
 

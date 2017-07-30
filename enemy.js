@@ -121,25 +121,35 @@ Chucker.prototype = Object.create(Enemy.prototype);
 Chucker.prototype.parent = Enemy.prototype;
 
 function Chucker() {
-    this.halfHeight = 8;
-    this.halfWidth = 8;
+    this.halfHeight = 16;
+    this.halfWidth = 16;
 
-    Enemy.call(this, 'test', 16, 16);
+    Enemy.call(this, 'saw', 32, 32);
 
     this.vel.x = 0;
+
+    this.fn = 0;
 };
 
 
 Chucker.prototype.update = function() {
-    this.vel.y += 0.1;
-
-    this.f++;
-    if (this.f % 9 == 0) {
-        this.frameNumber = (this.frameNumber + 1) % 4;
+    if (player.pos.x > this.pos.x) {
+        this.dir = 1;
+    } else {
+        this.dir = -1;
     }
 
+    this.f++;
     if (this.f % 120 == 0) {
         this.shoot();
+    } else if (this.f % 120 < 12) {
+        this.fn = 1;
+    } else if (this.f % 120 < 96) {
+        this.fn = 1;
+    } else if (this.f % 120 > 108) {
+        this.fn = 0;
+    } else {
+        this.fn = 2;
     }
 
     Entity.prototype.update.call(this);
@@ -148,28 +158,39 @@ Chucker.prototype.update = function() {
 Chucker.prototype.shoot = function() {
     var saw = new Saw();
 
-    saw.pos.x = this.pos.x;
-    saw.pos.y = this.pos.y;
-
-    var dir = -1;
-    if (player.pos.x > this.pos.x) {
-        dir = 1;
-    }
-
     if (Math.abs(player.pos.y - this.pos.y) > 30) {
         saw.vel.x = 1;
         saw.vel.y = -2.5;
+
+        saw.pos.x = this.pos.x + 2 * this.dir;
+        saw.pos.y = this.pos.y + 4;
     } else {
         saw.vel.x = 2;
         saw.vel.y = 0;
         saw.arc = false;
+
+        saw.pos.x = this.pos.x + 4 * this.dir;
+        saw.pos.y = this.pos.y + 6;
     }
-    saw.vel.x *= dir;
+    saw.vel.x *= this.dir;
+
+    saw.pos.x += saw.vel.x;
+    saw.pos.y += saw.vel.y;
 
     entities.push(saw);
+
+    this.fn = 1;
 }
 
 Chucker.prototype.updateGraphics = function() {
+    if (Math.abs(player.pos.y - this.pos.y) > 30) {
+        this.frameNumber = this.fn + 4;
+    } else {
+        this.frameNumber = this.fn;
+    }
+
+    this.sprite.scale.x = -this.dir;
+
     Entity.prototype.updateGraphics.call(this);
 }
 
@@ -180,10 +201,12 @@ Saw.prototype = Object.create(Entity.prototype);
 Saw.prototype.parent = Entity.prototype;
 
 function Saw() {
-    Entity.call(this, 'energy', 16, 16);
+    this.halfWidth = 8;
+    this.halfHeight = 8;
+    Entity.call(this, 'saw', 32, 32);
 
     this.addBox();
-    this.f = 0;
+    this.frameNumber = 7;
 
     this.pos.x = 100
     this.type = SAW;
@@ -201,11 +224,6 @@ function Saw() {
 // }
 
 Saw.prototype.update = function() {
-    this.f++;
-    if (this.f % 6 == 0) {
-        this.frameNumber = (this.frameNumber + 1) % 8;
-    }
-
     if (this.arc) this.vel.y += 0.05;
 
     Entity.prototype.update.call(this);
