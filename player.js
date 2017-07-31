@@ -39,9 +39,13 @@ function Player() {
     this.halfWidth = 5;
     this.addBox();
 
-    // var filter = new PIXI.ColorMatrixFilter();
-    // filter.matrix = [1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1];
-    // this.sprite.filter = [filter];
+    this.filter = new PIXI.filters.ColorMatrixFilter();
+    this.filter.matrix = [ 
+        1, 0, 0, 0.5,
+        1, 1, 0, 0.5,
+        0, 0, 1, 0.5,
+        0, 0, 0, 1
+    ];
 };
 
 Player.prototype.right = function() {
@@ -318,6 +322,13 @@ Player.prototype.update = function() {
     }
     this.walkCycle--;
     this.damaged--;
+
+    if (this.damaged > 0 && Math.floor(this.damaged / 8) % 2 == 1) {
+        this.sprite.filters = [this.filter];
+    } else {
+        this.sprite.filters = [];
+    }
+
     this.vel.y += 0.25;
 
     this.collided = false;
