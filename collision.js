@@ -125,6 +125,28 @@ CollisionHandler.handles.push([SAW, ENEMY, function(saw, enemy, boxes) {
     }
 }]);
 
+CollisionHandler.handles.push([SAW, ALPHA, function(saw, enemy, boxes) {
+    if (!saw.struck) return;
+
+    saw.dead = true;
+
+    if (boxes[1] == 0) {
+        enemy.damage();
+
+        hitEnemy.play();
+
+        enemy.vel.x = player.dir * 4;
+        enemy.state = -1;
+    } else {
+        enemy.vel.x = player.dir * 5;
+        enemy.state = -1;
+
+        hitShield.play();
+    }
+
+    enemy.boxes.length = 2;
+}]);
+
 CollisionHandler.handles.push([PLAYER, ALPHA, function(player, enemy, boxes) {
     if (boxes[0] > 0) {
         if (boxes[1] == 0) {

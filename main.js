@@ -72,7 +72,7 @@ function animate() {
 
     entities = entities.filter(function( obj ) {
         if (obj.dead) {
-            currentContainer.removeChild(obj.sprite);
+            obj.sprite.destroy();
         }
         return !obj.dead;
     });
