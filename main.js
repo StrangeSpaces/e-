@@ -144,6 +144,7 @@ function init() {
              .add('rust', 'imgs/rust.png')
              .add('ui', 'imgs/ui.png')
              .add('eneg', 'imgs/eneg.png')
+             .add('particles', 'imgs/particles.png')
              .add('ealpha', 'imgs/ealpha.png').load(function (loader, res) {
       resources = res;
 

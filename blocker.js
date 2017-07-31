@@ -52,8 +52,18 @@ Blocker.prototype.damage = function() {
         this.hp--;
         this.damaged = 14;
 
+        var star = new Star();
+        star.pos.x = this.pos.x;
+        star.pos.y = this.pos.y;
+        entities.push(star);
+
         if (this.hp <= 0) {
             this.dead = true;
+
+            var explosion = new Explosion();
+            explosion.pos.x = this.pos.x;
+            explosion.pos.y = this.pos.y;
+            entities.push(explosion);  
 
             for (var i = 0; i < 4; i++) {
                 var eng = new Energy();

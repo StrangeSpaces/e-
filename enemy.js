@@ -26,6 +26,105 @@ Energy.prototype.update = function() {
     Entity.prototype.update.call(this);
 }
 
+Star.prototype = Object.create(Entity.prototype);
+Star.prototype.parent = Entity.prototype;
+
+function Star() {
+    Entity.call(this, 'particles', 32, 32);
+
+    this.f = 0;
+    this.frameNumber = 0;
+    this.type = -100;
+}
+
+Star.prototype.update = function() {
+    this.f++;
+    if (this.f % 6 == 0) {
+        this.frameNumber++;
+        if (this.frameNumber > 2) {
+            this.dead = true;
+            return
+        }
+    }
+
+    Entity.prototype.update.call(this);
+}
+
+Spark.prototype = Object.create(Entity.prototype);
+Spark.prototype.parent = Entity.prototype;
+
+function Spark() {
+    Entity.call(this, 'particles', 32, 32);
+
+    this.f = 0;
+    this.frameNumber = 4;
+    this.type = -100;
+}
+
+Spark.prototype.update = function() {
+    this.f++;
+    if (this.f % 6 == 0) {
+        this.frameNumber++;
+        if (this.frameNumber > 5) {
+            this.dead = true;
+            return
+        }
+    }
+
+    Entity.prototype.update.call(this);
+}
+
+Explosion.prototype = Object.create(Entity.prototype);
+Explosion.prototype.parent = Entity.prototype;
+
+function Explosion() {
+    Entity.call(this, 'particles', 32, 32);
+
+    this.f = 0;
+    this.frameNumber = 16;
+    this.type = -100;
+}
+
+Explosion.prototype.update = function() {
+    this.f++;
+    if (this.f % 6 == 0) {
+        this.frameNumber++;
+        if (this.frameNumber > 23) {
+            this.dead = true;
+            return
+        }
+    }
+
+    Entity.prototype.update.call(this);
+}
+
+Smoke.prototype = Object.create(Entity.prototype);
+Smoke.prototype.parent = Entity.prototype;
+
+function Smoke() {
+    Entity.call(this, 'particles', 32, 32);
+
+    this.f = 0;
+    this.frameNumber = 8;
+    this.type = -100;
+}
+
+Smoke.prototype.update = function() {
+    this.f++;
+    if (this.f % 6 == 0) {
+        this.frameNumber++;
+        if (this.frameNumber > 15) {
+            this.dead = true;
+            return
+        }
+    }
+
+    Entity.prototype.update.call(this);
+}
+
+
+
+
 
 Light.prototype = Object.create(Entity.prototype);
 Light.prototype.parent = Entity.prototype;
@@ -151,8 +250,6 @@ function Chucker() {
     this.halfHeight = 8;
 
     Enemy.call(this, 'saw', 32, 32);
-
-    console.log(this.type);
 
     this.vel.x = 0;
     this.offset.y = -8;

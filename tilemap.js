@@ -1,5 +1,5 @@
 var level;
-var levelNum = 1;
+var levelNum = 5;
 
 var levelOrder = [
     'Intro',

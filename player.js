@@ -48,6 +48,8 @@ function Player() {
 
     this.halfWidth = 5;
     this.addBox();
+
+    this.f = 0;
 };
 
 Player.prototype.right = function() {
@@ -272,6 +274,10 @@ Player.prototype.update = function() {
             if (this.walkCycle == 0) {
                 this.frameNumber++;
                 stomp.play();
+                var spark = new Spark();
+                spark.pos.x = this.pos.x + 4 * this.dir;
+                spark.pos.y = this.pos.y;
+                entities.push(spark);
             } else if (this.walkCycle == -4) {
                 this.frameNumber++;
             }
@@ -364,6 +370,14 @@ Player.prototype.update = function() {
     }
     this.walkCycle--;
     this.damaged--;
+    this.f++;
+
+    if (this.hp < 3 && this.f % (this.hp * 60) == 0) {
+        var smoke = new Smoke();
+        smoke.pos.x = this.pos.x;
+        smoke.pos.y = this.pos.y - 10;
+        entities.push(smoke);
+    }
 
     if (this.damaged > 0 && Math.floor(this.damaged / 8) % 2 == 1) {
         this.sprite.filters = [filter];

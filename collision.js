@@ -29,6 +29,16 @@ CollisionHandler.handles.push([PLAYER, ENEMY, function(player, enemy, boxes) {
 
         hitEnemy.play();
 
+        var star = new Star();
+        star.pos.x = enemy.pos.x;
+        star.pos.y = enemy.pos.y;
+        entities.push(star);
+
+        var explosion = new Explosion();
+        explosion.pos.x = enemy.pos.x;
+        explosion.pos.y = enemy.pos.y;
+        entities.push(explosion);
+
         for (var i = 0; i < 4; i++) {
             var eng = new Energy();
             entities.push(eng);
@@ -73,6 +83,11 @@ CollisionHandler.handles.push([PLAYER, SAW, function(player, saw, boxes) {
         saw.vel.y = 0;
         saw.arc = false;
 
+        var star = new Star();
+        star.pos.x = saw.pos.x;
+        star.pos.y = saw.pos.y;
+        entities.push(star);
+
         hitEnemy.play();
     } else {
         player.damage();
@@ -85,6 +100,16 @@ CollisionHandler.handles.push([SAW, ENEMY, function(saw, enemy, boxes) {
 
     saw.dead = true;
     enemy.dead = true;
+
+    var star = new Star();
+    star.pos.x = enemy.pos.x;
+    star.pos.y = enemy.pos.y;
+    entities.push(star);
+
+    var explosion = new Explosion();
+    explosion.pos.x = enemy.pos.x;
+    explosion.pos.y = enemy.pos.y;
+    entities.push(explosion);
 
     for (var i = 0; i < 4; i++) {
         var eng = new Energy();
@@ -128,6 +153,11 @@ CollisionHandler.handles.push([PLAYER, LIGHT, function(player, light, boxes) {
         light.dead = true;
 
         glassBreak.play();
+
+        var star = new Star();
+        star.pos.x = light.pos.x;
+        star.pos.y = light.pos.y;
+        entities.push(star);
 
         for (var i = 0; i < 4; i++) {
             var eng = new Energy();
