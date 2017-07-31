@@ -154,7 +154,10 @@ Player.prototype.input = function() {
                 this.state = CROUCH;
                 this.frameNumber = 28;
                 done = true;
-            } 
+            } else {
+                this.frameNumber = 0;
+                this.state = IDLE;
+            }
             if (this.queueAttack) {
                 this.queueAttack = false;
                 this.attack();

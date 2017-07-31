@@ -105,7 +105,7 @@ CollisionHandler.handles.push([PLAYER, ALPHA, function(player, enemy, boxes) {
 
             landClang.play();
 
-            enemy.vel.x = player.dir * 3;
+            enemy.vel.x = player.dir * 4;
             enemy.state = -1;
         } else {
             enemy.vel.x = player.dir * 5;

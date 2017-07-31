@@ -43,6 +43,7 @@ Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.parent = Entity.prototype;
 
 function Enemy(file, x, y) {
+    this.isRust = 'rust' == (file || 'rust')
     Entity.call(this, file || 'rust', x || 32, y || 32);
 
     this.type = ENEMY;
@@ -55,9 +56,9 @@ function Enemy(file, x, y) {
     this.pos.x = 100;
 
     if (!this.halfWidth) {
-        this.halfHeight = 8;
+        this.halfHeight = 6;
         this.halfWidth = 5;
-        this.offset.y = -8;
+        this.offset.y = -10;
     }
 
     this.addBox();
@@ -69,12 +70,12 @@ Enemy.prototype.update = function() {
         this.frameNumber = (this.frameNumber + 1) % 4;
     }
 
-    if (Tilemap.getTile(Math.floor(this.pos.x / 16), Math.floor(this.pos.y / 16 + 1)) == 0) {
+    if (Tilemap.getTile(Math.floor(this.pos.x / 16), Math.floor(this.firstY / 16 + 1)) == 0) {
         this.vel.x *= -1;
         this.dir *= -1;
     }
 
-    this.vel.y += 0.5;
+    this.vel.y += 0.05;
 
     this.sprite.scale.x = -this.dir;
     Entity.prototype.update.call(this);
@@ -83,6 +84,19 @@ Enemy.prototype.update = function() {
 Enemy.prototype.hitWall = function() {
     this.vel.x *= -1;
     this.dir *= -1;
+}
+
+Enemy.prototype.hitGround = function() {
+    if (this.isRust) {
+        if (!this.firstY) this.firstY = this.pos.y;
+        if (this.frameNumber == 1) {
+            this.vel.y = -0.5;
+        } else {
+            this.vel.y = 0;
+        }
+    } else {
+        this.vel.y = 0;
+    }
 }
 
 Bouncer.prototype = Object.create(Enemy.prototype);
