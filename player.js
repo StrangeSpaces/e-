@@ -63,7 +63,7 @@ Player.prototype.hitGround = function() {
     this.collided = true;
     this.dashed = false;
 
-    if (this.state == JUMPING || this.state == AIR_ATK) {
+    if (this.state == JUMPING) {
         this.state = JUMP_LAND;
         this.jumpPause = 0;
         this.frameNumber = 18;
@@ -71,6 +71,30 @@ Player.prototype.hitGround = function() {
         this.boxes.length = 1;
 
         landClang.play();
+    } else if (this.state == AIR_ATK) {
+        landClang.play();
+        this.boxes.length = 1;
+
+        if (Key.isDown(Key.DOWN)) {
+            this.state = CROUCH_ATTK;
+
+            if (this.attkDur <= 6 && this.attkDur < 18) {
+                this.addBox(new Box(this, 12 * this.dir, 5, 22 * this.dir, 2));
+            }
+
+            this.frameNumber -= 8;
+        } else {
+            this.state = NORM_ATTK;
+
+            if (this.attkDur <= 6 && this.attkDur < 18) {
+                this.addBox(new Box(this, 12 * this.dir, -5, 22 * this.dir, 2));
+            }
+
+            this.frameNumber -= 20;
+        }
+
+        this.jumpPause = 0;
+        this.vel.x = 0;
     }
 }
 
@@ -153,14 +177,14 @@ Player.prototype.input = function() {
         if (this.walkCycle < 0) {
             var done = false;
             if (Key.isDown(Key.DOWN)) {
-                if (this.state == IDLE) crouchUncrouch.play();
                 this.state = CROUCH;
                 this.frameNumber = 28;
                 done = true;
             } else {
-                if (this.state == CROUCH) crouchUncrouch.play();
-                this.frameNumber = 0;
-                this.state = IDLE;
+                if (this.state == CROUCH) {
+                    this.frameNumber = 0;
+                    this.state = IDLE;
+                }
             }
             if (this.queueAttack) {
                 this.queueAttack = false;

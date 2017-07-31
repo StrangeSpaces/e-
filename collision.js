@@ -55,6 +55,8 @@ CollisionHandler.handles.push([PLAYER, ENERGY, function(player, energy, boxes) {
         energy.dead = true;
         player.energy += 0.07;
         if (player.energy >= 1) player.energy = 1;
+
+        absorbEnergy.play();
     } else {
         dif.setLength(1);
         energy.pos.x += dif.x;

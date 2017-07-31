@@ -40,6 +40,7 @@
 <script src="levels/RustLadder.js"></script>
 <script src="levels/DaringLeaps.js"></script>
 <script src="levels/Drops.js"></script>
+<script src="levels/Cross.js"></script>
 <!-- end levels -->
 
 <script type="text/javascript">
@@ -78,6 +79,11 @@
         src: ['sounds/crouchUncrouch.wav'],
         volume: vol,
     });
+
+    var absorbEnergy = new Howl({
+        src: ['sounds/absorbEnergy.wav'],
+        volume: vol * 0.25
+    })
 </script>
 
 <script src="input.js"></script>

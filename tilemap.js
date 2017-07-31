@@ -1,10 +1,11 @@
 var level;
-var levelNum = 2;
+var levelNum = 3;
 
 var levelOrder = [
     'RustLadder',
     'DaringLeaps',
     'Drops',
+    'Cross',
 ]
 
 var tiles;
