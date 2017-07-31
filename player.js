@@ -51,6 +51,7 @@ function Player() {
 
     this.halfWidth = 5;
     this.addBox();
+    this.initCamera();
 
     this.f = 0;
 };
@@ -413,7 +414,7 @@ Player.prototype.update = function() {
         this.sprite.filters = [];
     }
 
-    theme.rate(0.5 + Math.ceil(this.energy * 10) / 20);
+    // theme.rate(0.5 + Math.ceil(this.energy * 10) / 20);
 
     this.vel.y += 0.25;
 
@@ -428,6 +429,16 @@ Player.prototype.update = function() {
         this.frameNumber = 15;
     }
 };
+
+Player.prototype.initCamera = function() {
+    var dif = new Vec((-this.pos.x + logicalWidth/2) * scaleFactor,
+                      (-this.lastY + 32 + logicalHeight/2) * scaleFactor);
+    
+    currentContainer.position.x = dif.x;
+    currentContainer.position.y = dif.y;
+    frontContainer.position.x = currentContainer.position.x;
+    frontContainer.position.y = currentContainer.position.y;
+}
 
 Player.prototype.updateGraphics = function() {
     if (this.state != JUMPING && this.state != AIR_ATK) {

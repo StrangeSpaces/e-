@@ -104,12 +104,34 @@ function loadLevel() {
 
     heart = new PIXI.Sprite(new PIXI.Texture(resources['ui'].texture, new PIXI.Rectangle(0, 64, 48, 32)));
     uiContainer.addChild(heart);
+
+    var count = 0;
+
+    var s = 30;
+
+    var f = function() {
+        count++;
+        console.log(count);
+
+        mainContainer.alpha = count / s;
+        frontContainer.alpha = count / s;
+        uiContainer.alpha = count / s;
+
+        if (count == s) return;
+
+        requestAnimationFrame(f);
+    }
+    f();
 }
 
 function start() {
     mainContainer.removeChildren();
     frontContainer.removeChildren();
     uiContainer.removeChildren();
+
+    mainContainer.alpha = 0;
+    frontContainer.alpha = 0;
+    uiContainer.alpha = 0;
 
     if (player) {
         LastEnergy = player.energy;
@@ -125,7 +147,7 @@ function init() {
   renderer = PIXI.autoDetectRenderer(logicalWidth, logicalHeight, {
     roundPixels: true,
     resolution: window.devicePixelRatio || 1,
-    backgroundColor: 0x350902,
+    backgroundColor: 0x35211a,
   });
   renderer.view.id = 'pixi-canvas';
   
