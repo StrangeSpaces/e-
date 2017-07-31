@@ -1,7 +1,9 @@
 var level;
-var levelNum = 3;
+var levelNum = 1;
 
 var levelOrder = [
+    'Intro',
+    'CuteDogs',
     'RustLadder',
     'DaringLeaps',
     'Drops',

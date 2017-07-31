@@ -41,6 +41,8 @@
 <script src="levels/DaringLeaps.js"></script>
 <script src="levels/Drops.js"></script>
 <script src="levels/Cross.js"></script>
+<script src="levels/Intro.js"></script>
+<script src="levels/CuteDogs.js"></script>
 <!-- end levels -->
 
 <script type="text/javascript">
@@ -57,12 +59,12 @@
 
     var landClang = new Howl({
         src: ['sounds/landClang.wav'],
-        volume: vol,
+        volume: vol * 0.7,
     });
 
     var getHit = new Howl({
         src: ['sounds/getHit.wav'],
-        volume: vol,
+        volume: vol * 0.7,
     });
 
     var hitShield = new Howl({
@@ -72,7 +74,7 @@
 
     var hitEnemy = new Howl({
         src: ['sounds/hitEnemy.wav'],
-        volume: vol * 0.5,
+        volume: vol * 0.3,
     });
 
     var crouchUncrouch = new Howl({
@@ -82,8 +84,25 @@
 
     var absorbEnergy = new Howl({
         src: ['sounds/absorbEnergy.wav'],
-        volume: vol * 0.25
+        volume: vol * 0.2
     })
+
+    var whiff =  new Howl({
+        src: ['sounds/whiff.wav'],
+        volume: vol * 0.5,
+    })
+
+    var windUp =  new Howl({
+        src: ['sounds/windUp.wav'],
+        volume: vol,
+    })
+
+    var theme = new Howl({
+        src: ['sounds/eNegTHeme.wav'],
+        volume: vol * 0.25,
+        loop: true,
+    })
+    theme.play();
 </script>
 
 <script src="input.js"></script>

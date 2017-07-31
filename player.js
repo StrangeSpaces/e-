@@ -306,6 +306,7 @@ Player.prototype.update = function() {
 
         if (this.attkDur == 6) {
             this.addBox(new Box(this, 12 * this.dir, -5, 22 * this.dir, 2));
+            whiff.play();
         } else if (this.attkDur == 18) {
             this.boxes.length = 1;
         }
@@ -327,6 +328,7 @@ Player.prototype.update = function() {
 
         if (this.attkDur == 6) {
             this.addBox(new Box(this, 12 * this.dir, 5, 22 * this.dir, 2))
+            whiff.play();
         } else if (this.attkDur == 18) {
             this.boxes.length = 1;
         }
@@ -348,6 +350,7 @@ Player.prototype.update = function() {
 
         if (this.attkDur == 6) {
             this.addBox(new Box(this, 12 * this.dir, -5, 22 * this.dir, 2))
+            whiff.play();
         } else if (this.attkDur == 18) {
             this.boxes.length = 1;
         }
