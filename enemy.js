@@ -157,13 +157,13 @@ Chucker.prototype.update = function() {
     }
 
     this.f++;
-    if (this.f % 120 == 0) {
+    if (this.f % 160 == 0) {
         this.shoot();
-    } else if (this.f % 120 < 12) {
+    } else if (this.f % 160 < 12) {
         this.fn = 1;
-    } else if (this.f % 120 > 96) {
+    } else if (this.f % 160 > 160 - 24) {
         this.fn = 1;
-    } else if (this.f % 120 > 108) {
+    } else if (this.f % 160 > 160 - 12) {
         this.fn = 0;
     } else {
         this.fn = 2;
