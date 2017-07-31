@@ -56,7 +56,7 @@ function Enemy(file, x, y) {
 
     if (!this.halfWidth) {
         this.halfHeight = 8;
-        this.halfWidth = 9;
+        this.halfWidth = 5;
         this.offset.y = -8;
     }
 

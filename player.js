@@ -31,6 +31,8 @@ function Player() {
 
     this.offset.y = -17;
 
+    this.lastY = this.pos.y;
+
     this.energy = 1;
     this.hp = 3;
 
@@ -41,9 +43,9 @@ function Player() {
 
     this.filter = new PIXI.filters.ColorMatrixFilter();
     this.filter.matrix = [ 
-        1, 0, 0, 0.5,
-        1, 1, 0, 0.5,
-        0, 0, 1, 0.5,
+        1, 0, 0, 256,
+        1, 1, 0, 256,
+        0, 0, 1, 256,
         0, 0, 0, 1
     ];
 };
@@ -344,8 +346,14 @@ Player.prototype.update = function() {
 };
 
 Player.prototype.updateGraphics = function() {
+    if (this.state != JUMPING && this.state != AIR_ATK) {
+        this.lastY = this.pos.y;
+    } else if (this.pos.y - this.lastY > 20) {
+        this.lastY += (this.pos.y - this.lastY) - 20;
+    }
+
     var dif = new Vec((-this.pos.x + logicalWidth/2) * scaleFactor - currentContainer.position.x,
-                      (-this.pos.y + 32 + logicalHeight/2) * scaleFactor - currentContainer.position.y);
+                      (-this.lastY + 32 + logicalHeight/2) * scaleFactor - currentContainer.position.y);
     dif.setLength(dif.length() / 16);
 
     currentContainer.position.x += dif.x;

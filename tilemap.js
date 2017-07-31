@@ -1,4 +1,4 @@
-var level = 'start';
+var level = 'DaringLeaps';
 
 var tiles = TileMaps[level]['layers'][1]['data'];
 var bg = TileMaps[level]['layers'][0]['data'];
@@ -90,10 +90,10 @@ var Tilemap = {
                 var tile = this.getTile(x, y);
                 if (tile != 0) {
                     if (entity == player && tile >= 9 && tile <= 12) {
-                        if ((x+0.6) * this.tileSize < entity.right() &&
-                            (y+0.6) * this.tileSize < entity.bot() &&
-                            (x+0.4) * this.tileSize > entity.left() &&
-                            (y+0.4) * this.tileSize > entity.top()) {
+                        if ((x+0.5) * this.tileSize < entity.right() &&
+                            (y+0.5) * this.tileSize < entity.bot() &&
+                            (x+0.5) * this.tileSize > entity.left() &&
+                            (y+0.5) * this.tileSize > entity.top()) {
                             start();
                         }
                         continue;

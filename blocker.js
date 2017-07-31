@@ -18,13 +18,15 @@ function Blocker() {
 
     this.state = IDLE;
     this.fn = 0;
+    this.walkCycle = -100;
 
     this.hp = 3;
     this.damaged = 0;
 
     this.delay = 0;
+    this.cooldown = 0;
 
-    this.step();
+    // this.step();
 };
 
 Blocker.prototype.step = function() {
@@ -69,20 +71,37 @@ Blocker.prototype.damage = function() {
     }
 }
 
-Blocker.prototype.update = function() {
-    if (this.state == WALKING) {
+Blocker.prototype.logic = function() {
+    if (!this.activated) {
+        if (Math.abs(player.pos.x - this.pos.x) < 80 && player.pos.y == this.pos.y) {
+            this.activated = true
+        } else {
+            return;
+        }
+    }
+
+    if (this.state == WALKING || this.state == IDLE) {
         if (player.pos.y == this.pos.y) {
             this.dir = player.pos.x < this.pos.x ? -1 : 1;
         }
 
-        if (this.walkCycle <= -8) {
-            if (Math.abs(this.pos.x - player.pos.x) < 40 && player.pos.y == this.pos.y) {
-                if (this.delay <= 0) {
-                    this.attack();
+        if (Math.abs(this.pos.x - player.pos.x) < 35) {
+            if (this.walkCycle > 0) {
+                this.walkCycle = 0;
+                this.vel.x = 0;
+
+                if (this.fn < 5) {
+                    this.fn = 5;
+                } else {
+                    this.fn = 9;
                 }
-            } else {
-                this.step();
             }
+
+            if (this.delay <= 0) {
+                this.attack();
+            }
+        } else if (this.walkCycle <= -8) {
+            this.step();
         }
 
         if (this.walkCycle > 0) {
@@ -110,7 +129,7 @@ Blocker.prototype.update = function() {
                 this.fn = 0;
                 this.state = WALKING;
                 this.walkCycle = -8;
-                this.delay = random(45, 120);
+                this.delay = random(60, 120);
             } else if (this.attackDur % 6 == 0) {
                 this.fn++;
 
@@ -128,6 +147,10 @@ Blocker.prototype.update = function() {
         if (this.vel.x == 0) {
             this.step();
         }
+
+        if (this.vel.x != 0 && Tilemap.getTile(Math.floor(this.pos.x / 16), Math.floor(this.pos.y / 16 + 1)) == 0) {
+            this.vel.x = 0;
+        }
     }
 
     this.walkCycle--;
@@ -142,6 +165,10 @@ Blocker.prototype.update = function() {
         }
     }
     if (this.noSwap != null) this.noSwap--;
+}
+
+Blocker.prototype.update = function() {
+    this.logic();
 
     this.vel.y += 0.25;
 
