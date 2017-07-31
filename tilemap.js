@@ -1,4 +1,4 @@
-var level = 'DaringLeaps';
+var level = 'start';
 
 var tiles = TileMaps[level]['layers'][1]['data'];
 var bg = TileMaps[level]['layers'][0]['data'];
@@ -7,6 +7,8 @@ var fg = TileMaps[level]['layers'][3]['data'];
 var tileMapWidth = TileMaps[level]['width'];
 var tileMapHeight = TileMaps[level]['height'];
 var cols = TileMaps[level]['tilesets'][0]['columns']
+
+var SX = null;
 
 var Tilemap = {
     tileSize: 16,
