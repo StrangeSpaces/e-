@@ -56,7 +56,7 @@ Box.prototype.collide = function(other) {
 }
 
 function Entity(file, width, height) {
-    this.pos = new Vec(15, 15);
+    this.pos = new Vec(-1000, 15);
     this.vel = new Vec(0, 0);
     this.offset = new Vec(0, 0);
 

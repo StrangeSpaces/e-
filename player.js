@@ -130,9 +130,20 @@ Player.prototype.damage = function() {
         getHit.play();
 
         if (this.hp <= 0) {
-            start();
+            this.die();
         }
     }
+}
+
+Player.prototype.die = function() {
+    var explosion = new Explosion();
+    explosion.pos.x = player.pos.x;
+    explosion.pos.y = player.pos.y;
+    entities.push(explosion);
+
+    this.deathCount = 36;
+
+    this.sprite.visible = false;
 }
 
 Player.prototype.attack = function() {
@@ -236,6 +247,16 @@ Player.prototype.input = function() {
 }
 
 Player.prototype.update = function() {
+    if (this.deathCount > 0) {
+        this.deathCount--;
+        if (this.deathCount == 0) { 
+            this.hp = 3;
+            this.energy = 1;
+            start();
+        }
+        return;
+    }
+
     this.input();
 
     if (this.state == JUMP_SQUAT) {
@@ -267,6 +288,10 @@ Player.prototype.update = function() {
             if ((!l && !r) || (!l && this.dir == LEFT) || (!r && this.dir == RIGHT)) {
                 this.walkCycle = 0;
                 stomp.play();
+                var spark = new Spark();
+                spark.pos.x = this.pos.x + 8 * this.dir;
+                spark.pos.y = this.pos.y - 2;
+                entities.push(spark);
                 if (this.frameNumber < 6) {
                     this.frameNumber = 6;
                 } else {

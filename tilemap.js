@@ -123,7 +123,8 @@ var Tilemap = {
                             (y+0.5) * this.tileSize < entity.bot() &&
                             (x+0.5) * this.tileSize > entity.left() &&
                             (y+0.5) * this.tileSize > entity.top()) {
-                            start();
+
+                            player.die()
                         }
                         continue;
                     }

@@ -36,6 +36,8 @@ function Star() {
     this.frameNumber = 0;
     this.type = -100;
     this.moveThroughWalls = true;
+
+    this.updateGraphics();
 }
 
 Star.prototype.update = function() {
@@ -61,6 +63,8 @@ function Spark() {
     this.frameNumber = 4;
     this.type = -100;
     this.moveThroughWalls = true;
+
+    this.updateGraphics();
 }
 
 Spark.prototype.update = function() {
@@ -86,6 +90,8 @@ function Explosion() {
     this.frameNumber = 16;
     this.type = -100;
     this.moveThroughWalls = true;
+
+    this.updateGraphics();
 }
 
 Explosion.prototype.update = function() {
@@ -113,6 +119,8 @@ function Smoke() {
     this.moveThroughWalls = true;
 
     this.vel.y = -0.5;
+
+    this.updateGraphics();
 }
 
 Smoke.prototype.update = function() {
@@ -362,6 +370,6 @@ Saw.prototype.update = function() {
 
     Entity.prototype.update.call(this);
 
-    if (this.pos.x < 0 || this.pos.y < 0 || this.pos.x > tileMapWidth * 16 || this.pos.y > tileMapHeight * 16) this.dead = true;
+    if (this.pos.y > tileMapHeight * 16 + 8) this.dead = true;
 }
 
