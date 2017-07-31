@@ -275,8 +275,8 @@ Player.prototype.update = function() {
                 this.frameNumber++;
                 stomp.play();
                 var spark = new Spark();
-                spark.pos.x = this.pos.x + 4 * this.dir;
-                spark.pos.y = this.pos.y;
+                spark.pos.x = this.pos.x + 8 * this.dir;
+                spark.pos.y = this.pos.y - 2;
                 entities.push(spark);
             } else if (this.walkCycle == -4) {
                 this.frameNumber++;
@@ -384,6 +384,8 @@ Player.prototype.update = function() {
     } else {
         this.sprite.filters = [];
     }
+
+    theme.rate(this.energy / 10 + 0.9);
 
     this.vel.y += 0.25;
 

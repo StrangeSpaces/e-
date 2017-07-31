@@ -35,6 +35,7 @@ function Star() {
     this.f = 0;
     this.frameNumber = 0;
     this.type = -100;
+    this.moveThroughWalls = true;
 }
 
 Star.prototype.update = function() {
@@ -59,6 +60,7 @@ function Spark() {
     this.f = 0;
     this.frameNumber = 4;
     this.type = -100;
+    this.moveThroughWalls = true;
 }
 
 Spark.prototype.update = function() {
@@ -83,6 +85,7 @@ function Explosion() {
     this.f = 0;
     this.frameNumber = 16;
     this.type = -100;
+    this.moveThroughWalls = true;
 }
 
 Explosion.prototype.update = function() {
@@ -107,6 +110,9 @@ function Smoke() {
     this.f = 0;
     this.frameNumber = 8;
     this.type = -100;
+    this.moveThroughWalls = true;
+
+    this.vel.y = -0.5;
 }
 
 Smoke.prototype.update = function() {
