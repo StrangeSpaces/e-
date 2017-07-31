@@ -76,6 +76,7 @@ Blocker.prototype.logic = function() {
         if (Math.abs(player.pos.x - this.pos.x) < 80 && player.pos.y == this.pos.y) {
             this.activated = true
         } else {
+            this.dir = player.pos.x < this.pos.x ? -1 : 1;
             return;
         }
     }
