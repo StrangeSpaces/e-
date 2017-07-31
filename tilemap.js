@@ -26,7 +26,15 @@ var Tilemap = {
         }
         for (var y = 0; y < tileMapHeight; y++) {
             for (var x = 0; x < tileMapWidth; x++) {
-                this.place(fg[y * tileMapWidth + x] - 1, x, y, frontContainer);
+                var tile = fg[y * tileMapWidth + x] - 1;
+                if (tile == 12) {
+                    var entity = new Light();
+                    entity.pos.x = (x + 0.5) * this.tileSize;
+                    entity.pos.y = (y + 0.5) * this.tileSize;
+                    entities.push(entity);
+                } else {
+                    this.place(tile, x, y, frontContainer);
+                }
             }
         }
         for (var y = 0; y < tileMapHeight; y++) {
@@ -45,7 +53,6 @@ var Tilemap = {
                 }
 
                 if (entity) {
-                    console.log('create');
                     entity.pos.x = (x + 0.5) * this.tileSize;
                     entity.pos.y = y * this.tileSize;
                     entities.push(entity);

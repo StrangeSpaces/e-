@@ -99,10 +99,29 @@ CollisionHandler.handles.push([PLAYER, ALPHA, function(player, enemy, boxes) {
         if (boxes[1] == 0) {
             enemy.damage();
         }
-        
+
         enemy.vel.x = player.dir * 3;
         enemy.state = -1;
     } else if (boxes[1] > 1) {
         player.damage();
+    }
+}]);
+
+CollisionHandler.handles.push([PLAYER, LIGHT, function(player, light, boxes) {
+    if (boxes[0] > 0) {
+        light.dead = true;
+
+        for (var i = 0; i < 4; i++) {
+            var eng = new Energy();
+            entities.push(eng);
+
+            var dx = random(-5, 5)
+
+            eng.pos.x = light.pos.x + dx;
+            eng.pos.y = light.pos.y;
+
+            eng.vel.x = dx/5;
+            eng.vel.y = random(-2, -1.5)
+        }        
     }
 }]);

@@ -29,6 +29,7 @@ var ENEMY = 2;
 var ENERGY = 3;
 var SAW = 4;
 var ALPHA = 5;
+var LIGHT = 6;
 
 var runningID = 0;
 
@@ -86,7 +87,6 @@ function Entity(file, width, height) {
 
 Entity.prototype.addBox = function(box) {
     if (!box) {
-        console.log(this.halfHeight);
         box = new Box(this, -this.halfWidth, -this.halfHeight, this.halfWidth * 2, this.halfHeight * 2);
     }
     this.boxes.push(box);

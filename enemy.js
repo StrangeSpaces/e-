@@ -27,6 +27,18 @@ Energy.prototype.update = function() {
 }
 
 
+Light.prototype = Object.create(Entity.prototype);
+Light.prototype.parent = Entity.prototype;
+
+function Light() {
+    Entity.call(this, 'tiles', 16, 16);
+
+    this.addBox();
+    this.frameNumber = 12
+    this.type = LIGHT;
+}
+
+
 Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.parent = Entity.prototype;
 
