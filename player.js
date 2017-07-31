@@ -38,6 +38,10 @@ function Player() {
 
     this.halfWidth = 5;
     this.addBox();
+
+    // var filter = new PIXI.ColorMatrixFilter();
+    // filter.matrix = [1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1];
+    // this.sprite.filter = [filter];
 };
 
 Player.prototype.right = function() {
@@ -330,7 +334,7 @@ Player.prototype.update = function() {
 
 Player.prototype.updateGraphics = function() {
     var dif = new Vec((-this.pos.x + logicalWidth/2) * scaleFactor - currentContainer.position.x,
-                      (-this.pos.y + logicalHeight/2) * scaleFactor - currentContainer.position.y);
+                      (-this.pos.y + 32 + logicalHeight/2) * scaleFactor - currentContainer.position.y);
     dif.setLength(dif.length() / 16);
 
     currentContainer.position.x += dif.x;
