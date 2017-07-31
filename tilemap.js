@@ -6,7 +6,17 @@ var placement = TileMaps[level]['layers'][2]['data'];
 var fg = TileMaps[level]['layers'][3]['data'];
 var tileMapWidth = TileMaps[level]['width'];
 var tileMapHeight = TileMaps[level]['height'];
-var cols = TileMaps[level]['tilesets'][0]['columns']
+var cols = TileMaps[level]['tilesets'][0]['columns'];
+
+function setup() {
+    tiles = TileMaps[level]['layers'][1]['data'];
+    bg = TileMaps[level]['layers'][0]['data'];
+    placement = TileMaps[level]['layers'][2]['data'];
+    fg = TileMaps[level]['layers'][3]['data'];
+    tileMapWidth = TileMaps[level]['width'];
+    tileMapHeight = TileMaps[level]['height'];
+    cols = TileMaps[level]['tilesets'][0]['columns'];
+}
 
 var SX = null;
 
@@ -87,6 +97,10 @@ var Tilemap = {
 
         for (var y = startY; y < endY; y++) {
             for (var x = startX; x < endX; x++) {
+                var f = placement[y * tileMapWidth + x] - 1;
+
+                if (f == 24) start();
+
                 var tile = this.getTile(x, y);
                 if (tile != 0) {
                     if (entity == player && tile >= 9 && tile <= 12) {
