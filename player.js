@@ -174,6 +174,17 @@ Player.prototype.input = function() {
             this.energyLost();
         }
     }
+
+    if (this.state == JUMPING || this.state == AIR_ATK) {
+        this.friction(0.05);
+        if (Key.isDown(Key.RIGHT)) {
+            this.vel.x += 0.1;
+            if (this.vel.x > 1.5) this.vel.x = 1.5;
+        } else if (Key.isDown(Key.LEFT)) {
+            this.vel.x -= 0.1;
+            if (this.vel.x < -1.5) this.vel.x = -1.5;
+        }
+    }
 }
 
 Player.prototype.update = function() {

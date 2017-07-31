@@ -133,7 +133,7 @@ Chucker.prototype = Object.create(Enemy.prototype);
 Chucker.prototype.parent = Enemy.prototype;
 
 function Chucker() {
-    this.halfWidth = 16;
+    this.halfWidth = 8;
     this.halfHeight = 8;
 
     Enemy.call(this, 'saw', 32, 32);
