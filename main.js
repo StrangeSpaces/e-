@@ -110,6 +110,12 @@ function start() {
     mainContainer.removeChildren();
     frontContainer.removeChildren();
     uiContainer.removeChildren();
+
+    if (player) {
+        LastEnergy = player.energy;
+        LastHP = player.hp;
+    }
+
     entities.length = 0;
 
     loadLevel();

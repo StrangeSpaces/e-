@@ -25,6 +25,9 @@ filter.matrix = [
     0, 0, 0, 1
 ];
 
+var LastEnergy = 1;
+var LastHP = 3;
+
 function Player() {
     Entity.call(this, 'eneg', 80, 64);
 
@@ -41,8 +44,8 @@ function Player() {
 
     this.lastY = this.pos.y;
 
-    this.energy = 1;
-    this.hp = 3;
+    this.energy = LastEnergy;
+    this.hp = LastHP;
 
     this.damaged = 0;
 
