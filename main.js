@@ -89,9 +89,10 @@ function loadLevel() {
     Tilemap.init();
 
     player = new Player();
-
-    player.pos.x = SX;
-    player.pos.y = SY;
+    if (SX) {
+        player.pos.x = SX;
+        player.pos.y = SY;
+    }
     entities.push(player);
 
     border = new PIXI.Sprite(new PIXI.Texture(resources['ui'].texture, new PIXI.Rectangle(0, 0, 48, 32)));
