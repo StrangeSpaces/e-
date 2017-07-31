@@ -36,16 +36,16 @@ function Player() {
 
     this.damaged = 0;
 
-    this.halfWidth = 6;
+    this.halfWidth = 5;
     this.addBox();
 };
 
 Player.prototype.right = function() {
-    return this.dir == RIGHT ? this.pos.x + 12 : this.pos.x + 8;
+    return this.dir == RIGHT ? this.pos.x + 10 : this.pos.x + 8;
 }
 
 Player.prototype.left = function() {
-    return this.dir == LEFT ? this.pos.x - 12 : this.pos.x - 8;
+    return this.dir == LEFT ? this.pos.x - 10 : this.pos.x - 8;
 }
 
 Player.prototype.hitGround = function() {
