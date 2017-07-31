@@ -2,6 +2,7 @@ var CollisionHandler = {
     handles: [],
 
     handle: function(a, b) {
+        if (!a || !b) return
         for (var i = 0; i < this.handles.length; i++) {
             var h = this.handles[i];
 
@@ -96,11 +97,11 @@ CollisionHandler.handles.push([SAW, ENEMY, function(saw, enemy, boxes) {
 CollisionHandler.handles.push([PLAYER, ALPHA, function(player, enemy, boxes) {
     if (boxes[0] > 0) {
         if (boxes[1] == 0) {
-            enemy.dead = true
-        } else {
-            enemy.vel.x = player.dir * 3;
-            enemy.state = -1;
+            enemy.damage();
         }
+        
+        enemy.vel.x = player.dir * 3;
+        enemy.state = -1;
     } else if (boxes[1] > 1) {
         player.damage();
     }

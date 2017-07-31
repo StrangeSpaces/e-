@@ -19,6 +19,9 @@ function Blocker() {
     this.state = IDLE;
     this.fn = 0;
 
+    this.hp = 3;
+    this.damaged = 0;
+
     this.delay = 0;
 
     this.step();
@@ -40,6 +43,30 @@ Blocker.prototype.attack = function() {
     this.attackDur = 36;
 
     this.state = NORM_ATTK;
+}
+
+Blocker.prototype.damage = function() {
+    if (this.damaged <= 0) {
+        this.hp--;
+        this.damaged = 14;
+
+        if (this.hp <= 0) {
+            this.dead = true;
+
+            for (var i = 0; i < 4; i++) {
+                var eng = new Energy();
+                entities.push(eng);
+
+                var dx = random(-5, 5)
+
+                eng.pos.x = this.pos.x + dx;
+                eng.pos.y = this.pos.y;
+
+                eng.vel.x = dx/5;
+                eng.vel.y = random(-2, -1.5)
+            }
+        }
+    }
 }
 
 Blocker.prototype.update = function() {
@@ -105,9 +132,10 @@ Blocker.prototype.update = function() {
 
     this.walkCycle--;
     this.delay--;
+    this.damaged--;
 
     if ((this.shieldHigh && (player.state == CROUCH || player.state == CROUCH_ATTK)) || (!this.shieldHigh && player.state != CROUCH && player.state != CROUCH_ATTK)) {
-        if (this.noSwap == null) this.noSwap = random(15, 60);
+        if (this.noSwap == null) this.noSwap = random(15, 45);
         if (this.noSwap <= 0) {
             this.shieldHigh = !this.shieldHigh;
             this.noSwap = null;

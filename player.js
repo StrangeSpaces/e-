@@ -83,7 +83,6 @@ Player.prototype.jump = function() {
 
 Player.prototype.damage = function() {
     if (this.damaged <= 0) {
-        console.log(this.hp);
         this.hp--;
         this.damaged = 60;
 
