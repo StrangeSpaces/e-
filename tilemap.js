@@ -34,6 +34,10 @@ var Tilemap = {
                 var ent = placement[y * tileMapWidth + x] - 1;
                 var entity = null;
                 if (ent == 16) {
+                    entity = new Enemy();
+                } else if (ent == 17) {
+                    entity = new Blocker();
+                } else if (ent == 18) {
                     entity = new Chucker();
                 } else if (ent == 25) {
                     SX = x * 16 + 8;

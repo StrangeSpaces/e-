@@ -14,10 +14,14 @@ function Blocker() {
     this.offset.y = -17;
 
     this.shieldHigh = true;
-    this.noSwap = 0;
+    this.noSwap = null;
 
     this.state = IDLE;
     this.fn = 0;
+
+    this.delay = 0;
+
+    this.step();
 };
 
 Blocker.prototype.step = function() {
@@ -40,8 +44,18 @@ Blocker.prototype.attack = function() {
 
 Blocker.prototype.update = function() {
     if (this.state == WALKING) {
+        if (player.pos.y == this.pos.y) {
+            this.dir = player.pos.x < this.pos.x ? -1 : 1;
+        }
+
         if (this.walkCycle <= -8) {
-            this.step();
+            if (Math.abs(this.pos.x - player.pos.x) < 40 && player.pos.y == this.pos.y) {
+                if (this.delay <= 0) {
+                    this.attack();
+                }
+            } else {
+                this.step();
+            }
         }
 
         if (this.walkCycle > 0) {
@@ -67,7 +81,9 @@ Blocker.prototype.update = function() {
             this.attackDur--;
             if (this.attackDur == 0) {
                 this.fn = 0;
-                this.state = IDLE;
+                this.state = WALKING;
+                this.walkCycle = -8;
+                this.delay = random(45, 120);
             } else if (this.attackDur % 6 == 0) {
                 this.fn++;
 
@@ -83,17 +99,21 @@ Blocker.prototype.update = function() {
         this.fn = 0;
         this.friction(0.5);
         if (this.vel.x == 0) {
-            this.attack();
+            this.step();
         }
     }
 
     this.walkCycle--;
+    this.delay--;
 
-    if (this.noSwap <= 0 && Math.floor(random(0, 500)) == 0) {
-        // this.shieldHigh = !this.shieldHigh;
-        this.noSwap = 60;
+    if ((this.shieldHigh && (player.state == CROUCH || player.state == CROUCH_ATTK)) || (!this.shieldHigh && player.state != CROUCH && player.state != CROUCH_ATTK)) {
+        if (this.noSwap == null) this.noSwap = random(15, 60);
+        if (this.noSwap <= 0) {
+            this.shieldHigh = !this.shieldHigh;
+            this.noSwap = null;
+        }
     }
-    this.noSwap--;
+    if (this.noSwap != null) this.noSwap--;
 
     this.vel.y += 0.25;
 
@@ -111,6 +131,11 @@ Blocker.prototype.updateGraphics = function() {
         this.frameNumber = this.fn + (this.shieldHigh ? 0 : 1);
     } else {
         this.frameNumber = this.fn + (this.shieldHigh ? 0 : 8);
+    }
+    if (this.dir == 1) {
+        this.boxes[1].x = 9;
+    } else {
+        this.boxes[1].x = -11;
     }
     this.sprite.scale.x = this.dir;
 
