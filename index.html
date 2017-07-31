@@ -37,15 +37,37 @@
 
 
 <!-- levels -->
-<script src="levels/start.js"></script>
+<script src="levels/RustLadder.js"></script>
+<script src="levels/DaringLeaps.js"></script>
+<script src="levels/Drops.js"></script>
 <!-- end levels -->
 
 <script type="text/javascript">
-    // var vol = 0.7;
-    // var jump = new Howl({
-    //   src: ['audio/DIABJump.wav'],
-    //   volume: vol,
-    // });
+    var vol = 0.6;
+    var stomp = new Howl({
+      src: ['sounds/stomp.wav'],
+      volume: vol * 0.4,
+    });
+
+    var glassBreak = new Howl({
+      src: ['sounds/glassBreak.wav'],
+      volume: vol,
+    });
+
+    var landClang = new Howl({
+        src: ['sounds/landClang.wav'],
+        volume: vol,
+    });
+
+    var getHit = new Howl({
+        src: ['sounds/getHit.wav'],
+        volume: vol,
+    });
+
+    var hitShield = new Howl({
+        src: ['sounds/hitShield.wav'],
+        volume: vol * 0.5,
+    });
 </script>
 
 <script src="input.js"></script>

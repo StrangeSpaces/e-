@@ -1,14 +1,23 @@
-var level = 'DaringLeaps';
+var level;
+var levelNum = 1;
 
-var tiles = TileMaps[level]['layers'][1]['data'];
-var bg = TileMaps[level]['layers'][0]['data'];
-var placement = TileMaps[level]['layers'][2]['data'];
-var fg = TileMaps[level]['layers'][3]['data'];
-var tileMapWidth = TileMaps[level]['width'];
-var tileMapHeight = TileMaps[level]['height'];
-var cols = TileMaps[level]['tilesets'][0]['columns'];
+var levelOrder = [
+    'RustLadder',
+    'DaringLeaps',
+    'Drops',
+]
+
+var tiles;
+var bg;
+var placement;
+var fg;
+var tileMapWidth;
+var tileMapHeight;
+var cols;
 
 function setup() {
+    level = levelOrder[levelNum];
+
     tiles = TileMaps[level]['layers'][1]['data'];
     bg = TileMaps[level]['layers'][0]['data'];
     placement = TileMaps[level]['layers'][2]['data'];
@@ -99,7 +108,10 @@ var Tilemap = {
             for (var x = startX; x < endX; x++) {
                 var f = placement[y * tileMapWidth + x] - 1;
 
-                if (f == 24) start();
+                if (f == 24) {
+                    levelNum++;
+                    start();
+                }
 
                 var tile = this.getTile(x, y);
                 if (tile != 0) {

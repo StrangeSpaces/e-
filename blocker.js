@@ -158,6 +158,12 @@ Blocker.prototype.logic = function() {
     this.delay--;
     this.damaged--;
 
+    if (this.damaged > 7) {
+        this.sprite.filters = [filter];
+    } else {
+        this.sprite.filters = [];
+    }
+
     if ((this.shieldHigh && (player.state == CROUCH || player.state == CROUCH_ATTK)) || (!this.shieldHigh && player.state != CROUCH && player.state != CROUCH_ATTK)) {
         if (this.noSwap == null) this.noSwap = random(15, 45);
         if (this.noSwap <= 0) {

@@ -27,6 +27,8 @@ CollisionHandler.handles.push([PLAYER, ENEMY, function(player, enemy, boxes) {
     if (boxes[0] > 0) {
         enemy.dead = true;
 
+        landClang.play();
+
         for (var i = 0; i < 4; i++) {
             var eng = new Energy();
             entities.push(eng);
@@ -68,6 +70,8 @@ CollisionHandler.handles.push([PLAYER, SAW, function(player, saw, boxes) {
         saw.vel.x = player.dir * 3;
         saw.vel.y = 0;
         saw.arc = false;
+
+        landClang.play();
     } else {
         player.damage();
         saw.dead = true;
@@ -98,10 +102,20 @@ CollisionHandler.handles.push([PLAYER, ALPHA, function(player, enemy, boxes) {
     if (boxes[0] > 0) {
         if (boxes[1] == 0) {
             enemy.damage();
+
+            landClang.play();
+
+            enemy.vel.x = player.dir * 3;
+            enemy.state = -1;
+        } else {
+            enemy.vel.x = player.dir * 5;
+            enemy.state = -1;
+
+            hitShield.play();
         }
 
-        enemy.vel.x = player.dir * 3;
-        enemy.state = -1;
+        player.boxes.length = 1;
+        enemy.boxes.length = 2;
     } else if (boxes[1] > 1) {
         player.damage();
     }
@@ -110,6 +124,8 @@ CollisionHandler.handles.push([PLAYER, ALPHA, function(player, enemy, boxes) {
 CollisionHandler.handles.push([PLAYER, LIGHT, function(player, light, boxes) {
     if (boxes[0] > 0) {
         light.dead = true;
+
+        glassBreak.play();
 
         for (var i = 0; i < 4; i++) {
             var eng = new Energy();

@@ -17,6 +17,14 @@ var AIR_ATK = 9;
 
 var walkableStates = [IDLE, WALKING, CROUCH];
 
+var filter = new PIXI.filters.ColorMatrixFilter();
+filter.matrix = [ 
+    1, 0, 0, 256,
+    1, 1, 0, 256,
+    0, 0, 1, 256,
+    0, 0, 0, 1
+];
+
 function Player() {
     Entity.call(this, 'eneg', 80, 64);
 
@@ -40,14 +48,6 @@ function Player() {
 
     this.halfWidth = 5;
     this.addBox();
-
-    this.filter = new PIXI.filters.ColorMatrixFilter();
-    this.filter.matrix = [ 
-        1, 0, 0, 256,
-        1, 1, 0, 256,
-        0, 0, 1, 256,
-        0, 0, 0, 1
-    ];
 };
 
 Player.prototype.right = function() {
@@ -95,6 +95,8 @@ Player.prototype.damage = function() {
     if (this.damaged <= 0) {
         this.hp--;
         this.damaged = 60;
+
+        getHit.play();
 
         if (this.hp <= 0) {
             start();
@@ -226,6 +228,7 @@ Player.prototype.update = function() {
             var r = Key.isDown(Key.RIGHT);
             if ((!l && !r) || (!l && this.dir == LEFT) || (!r && this.dir == RIGHT)) {
                 this.walkCycle = 0;
+                stomp.play();
                 if (this.frameNumber < 6) {
                     this.frameNumber = 6;
                 } else {
@@ -235,6 +238,7 @@ Player.prototype.update = function() {
         } else {
             if (this.walkCycle == 0) {
                 this.frameNumber++;
+                stomp.play();
             } else if (this.walkCycle == -4) {
                 this.frameNumber++;
             }
@@ -326,7 +330,7 @@ Player.prototype.update = function() {
     this.damaged--;
 
     if (this.damaged > 0 && Math.floor(this.damaged / 8) % 2 == 1) {
-        this.sprite.filters = [this.filter];
+        this.sprite.filters = [filter];
     } else {
         this.sprite.filters = [];
     }
