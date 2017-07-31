@@ -1,5 +1,5 @@
 var level;
-var levelNum = 1;
+var levelNum = 6;
 
 var levelOrder = [
     'Intro',
@@ -8,6 +8,7 @@ var levelOrder = [
     'DaringLeaps',
     'Drops',
     'Cross',
+    'Climb',
 ]
 
 var tiles;
