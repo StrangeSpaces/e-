@@ -385,7 +385,7 @@ Player.prototype.update = function() {
         this.sprite.filters = [];
     }
 
-    theme.rate(this.energy / 10 + 0.9);
+    theme.rate(0.5 + Math.ceil(this.energy * 10) / 20);
 
     this.vel.y += 0.25;
 
