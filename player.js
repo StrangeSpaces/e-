@@ -86,6 +86,10 @@ Player.prototype.damage = function() {
         console.log(this.hp);
         this.hp--;
         this.damaged = 60;
+
+        if (this.hp <= 0) {
+            start();
+        }
     }
 }
 

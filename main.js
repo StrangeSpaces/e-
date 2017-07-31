@@ -109,6 +109,7 @@ function start() {
     mainContainer.removeChildren();
     frontContainer.removeChildren();
     uiContainer.removeChildren();
+    entities.length = 0;
 
     loadLevel();
 };

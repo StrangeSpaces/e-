@@ -80,7 +80,17 @@ var Tilemap = {
 
         for (var y = startY; y < endY; y++) {
             for (var x = startX; x < endX; x++) {
-                if (this.getTile(x, y) != 0) {
+                var tile = this.getTile(x, y);
+                if (tile != 0) {
+                    if (entity == player && tile >= 9 && tile <= 12) {
+                        if ((x+0.6) * this.tileSize < entity.right() &&
+                            (y+0.6) * this.tileSize < entity.bot() &&
+                            (x+0.4) * this.tileSize > entity.left() &&
+                            (y+0.4) * this.tileSize > entity.top()) {
+                            start();
+                        }
+                        continue;
+                    }
                     // if (x * this.tileSize < entity.right() &&
                     //     y * this.tileSize < entity.bot() &&
                     //     (x+1) * this.tileSize > entity.left() &&
@@ -102,6 +112,7 @@ var Tilemap = {
                                 entity.pos.y = (y+1) * this.tileSize + entity.halfHeight;
                             }
                         }
+                        return;
                     // }
                 }
             }
