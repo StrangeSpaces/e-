@@ -27,7 +27,7 @@ CollisionHandler.handles.push([PLAYER, ENEMY, function(player, enemy, boxes) {
     if (boxes[0] > 0) {
         enemy.dead = true;
 
-        landClang.play();
+        hitEnemy.play();
 
         for (var i = 0; i < 4; i++) {
             var eng = new Energy();
@@ -71,7 +71,7 @@ CollisionHandler.handles.push([PLAYER, SAW, function(player, saw, boxes) {
         saw.vel.y = 0;
         saw.arc = false;
 
-        landClang.play();
+        hitEnemy.play();
     } else {
         player.damage();
         saw.dead = true;
@@ -103,7 +103,7 @@ CollisionHandler.handles.push([PLAYER, ALPHA, function(player, enemy, boxes) {
         if (boxes[1] == 0) {
             enemy.damage();
 
-            landClang.play();
+            hitEnemy.play();
 
             enemy.vel.x = player.dir * 4;
             enemy.state = -1;

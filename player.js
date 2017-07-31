@@ -69,6 +69,8 @@ Player.prototype.hitGround = function() {
         this.frameNumber = 18;
         this.vel.x = 0;
         this.boxes.length = 1;
+
+        landClang.play();
     }
 }
 
@@ -151,10 +153,12 @@ Player.prototype.input = function() {
         if (this.walkCycle < 0) {
             var done = false;
             if (Key.isDown(Key.DOWN)) {
+                if (this.state == IDLE) crouchUncrouch.play();
                 this.state = CROUCH;
                 this.frameNumber = 28;
                 done = true;
             } else {
+                if (this.state == CROUCH) crouchUncrouch.play();
                 this.frameNumber = 0;
                 this.state = IDLE;
             }
@@ -215,6 +219,8 @@ Player.prototype.update = function() {
             } else {
                 this.vel.x = 0;
             }
+
+            crouchUncrouch.play();
 
             this.state = JUMPING;
             this.vel.y = Key.isDown(Key.UP) ? -6 : -4;
