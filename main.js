@@ -65,7 +65,7 @@ function collision() {
 
 function animate() {
     for (var i = entities.length - 1; i >= 0; i--) {
-        entities[i].update();
+        if (entities[i]) entities[i].update();
     }
 
     collision();
@@ -77,6 +77,14 @@ function animate() {
         return !obj.dead;
     });
 
+    for (var i = 0; i < entities.length; i++) {
+        if (entities[i].dead) {
+            entities[i].sprite.destroy();
+            entities.splice(i, 1);
+            i--;
+        }
+    }
+
     renderer.render(stage);
 
     // start the timer for the next animation loop
@@ -87,7 +95,7 @@ function loadLevel() {
     currentContainer = mainContainer;
 
     // levelNum = -1;
-    if (levelNum == -1) {
+    if (levelNum >= levelOrder.length) {
         var logo = new PIXI.Sprite(new PIXI.Texture(resources['logo'].texture, logo));
         logo.anchor.x = 0.5;
         logo.anchor.y = 0.5;

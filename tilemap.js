@@ -1,5 +1,5 @@
 var level;
-var levelNum = 12;
+var levelNum = 0;
 
 var levelOrder = [
     'First',
