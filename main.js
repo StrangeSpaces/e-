@@ -86,24 +86,38 @@ function animate() {
 function loadLevel() {
     currentContainer = mainContainer;
 
-    setup();
-    Tilemap.init();
+    // levelNum = -1;
+    if (levelNum == -1) {
+        var logo = new PIXI.Sprite(new PIXI.Texture(resources['logo'].texture, logo));
+        logo.anchor.x = 0.5;
+        logo.anchor.y = 0.5;
 
-    player = new Player();
-    if (SX) {
-        player.pos.x = SX;
-        player.pos.y = SY;
+        logo.position.x = logicalWidth / 2;
+        logo.position.y = logicalHeight / 2;
+
+        mainContainer.position.x = 0;
+        mainContainer.position.y = 0;
+        mainContainer.addChild(logo);
+    } else {
+        setup();
+        Tilemap.init();
+
+        player = new Player();
+        if (SX) {
+            player.pos.x = SX;
+            player.pos.y = SY;
+        }
+        entities.push(player);
+
+        border = new PIXI.Sprite(new PIXI.Texture(resources['ui'].texture, new PIXI.Rectangle(0, 0, 48, 32)));
+        uiContainer.addChild(border);
+
+        power = new PIXI.Sprite(new PIXI.Texture(resources['ui'].texture, new PIXI.Rectangle(0, 32, 48, 32)));
+        uiContainer.addChild(power);
+
+        heart = new PIXI.Sprite(new PIXI.Texture(resources['ui'].texture, new PIXI.Rectangle(0, 64, 48, 32)));
+        uiContainer.addChild(heart);
     }
-    entities.push(player);
-
-    border = new PIXI.Sprite(new PIXI.Texture(resources['ui'].texture, new PIXI.Rectangle(0, 0, 48, 32)));
-    uiContainer.addChild(border);
-
-    power = new PIXI.Sprite(new PIXI.Texture(resources['ui'].texture, new PIXI.Rectangle(0, 32, 48, 32)));
-    uiContainer.addChild(power);
-
-    heart = new PIXI.Sprite(new PIXI.Texture(resources['ui'].texture, new PIXI.Rectangle(0, 64, 48, 32)));
-    uiContainer.addChild(heart);
 
     var count = 0;
 
@@ -111,7 +125,6 @@ function loadLevel() {
 
     var f = function() {
         count++;
-        console.log(count);
 
         mainContainer.alpha = count / s;
         frontContainer.alpha = count / s;
@@ -173,6 +186,7 @@ function init() {
              .add('ui', 'imgs/ui.png')
              .add('eneg', 'imgs/eneg.png')
              .add('particles', 'imgs/particles.png')
+             .add('logo', 'imgs/logo.png')
              .add('ealpha', 'imgs/ealpha.png').load(function (loader, res) {
       resources = res;
 

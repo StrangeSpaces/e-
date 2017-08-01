@@ -165,7 +165,7 @@ CollisionHandler.handles.push([PLAYER, ALPHA, function(player, enemy, boxes) {
 
         player.boxes.length = 1;
         enemy.boxes.length = 2;
-    } else if (boxes[1] > 1) {
+    } else if (boxes[1] > 1 || enemy.state == DASH_ATK) {
         player.damage();
     }
 }]);

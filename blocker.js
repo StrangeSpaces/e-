@@ -1,11 +1,11 @@
 Blocker.prototype = Object.create(Enemy.prototype);
 Blocker.prototype.parent = Enemy.prototype;
 
-function Blocker() {
+function Blocker(file) {
     this.halfWidth = 8;
     this.halfHeight = 15;
 
-    Enemy.call(this, 'ealpha', 80, 64);
+    Enemy.call(this, file || 'ealpha', 80, 64);
     this.addBox(new Box(this, 9, -7, 2, 11));
 
     this.type = ALPHA;
@@ -216,4 +216,177 @@ Blocker.prototype.updateGraphics = function() {
 
 Blocker.prototype.hitWall = function(dir) {
     this.dir = -dir;
+}
+
+Boss.prototype = Object.create(Blocker.prototype);
+Boss.prototype.parent = Blocker.prototype;
+
+var DASH_ATK = 20;
+var SAW_THROW = 25;
+
+function Boss() {
+    Blocker.call(this, 'ealpha');
+
+    this.activated = true;
+}
+
+Boss.prototype.dashAtk = function() {
+    this.state = DASH_ATK;
+
+    this.dashCount = 30;
+}
+
+Boss.prototype.sawThrow = function() {
+    this.state = SAW_THROW;
+
+    this.sawed = true;
+
+    this.sawCount = 10;
+}
+
+Boss.prototype.logic = function() {
+    if (!this.activated) {
+        if (Math.abs(player.pos.x - this.pos.x) < 80 && player.pos.y == this.pos.y) {
+            this.activated = true
+        } else {
+            this.dir = player.pos.x < this.pos.x ? -1 : 1;
+            return;
+        }
+    }
+
+    if (this.state == DASH_ATK) {
+        this.vel.x = 3 * this.dir;
+        this.dashCount--;
+
+        if (this.dashCount == 0) {
+            this.vel.x = 0;
+            this.state = IDLE;
+            this.walkCycle = -100;
+            this.delay = random(45, 90);
+        }
+
+    }  else if (this.state == SAW_THROW) {
+        this.vel.x = 0;
+        this.sawCount--;
+        if (this.sawCount == 0) {
+            var saw = new Saw();
+
+            saw.vel.x = 2;
+            saw.vel.y = 0;
+            saw.arc = false;
+            saw.vel.x *= this.dir;
+
+            saw.pos.x = this.pos.x;
+            saw.pos.y = this.pos.y;
+
+            entities.push(saw);
+            this.sawed = true;
+
+            this.vel.x = 0;
+            this.state = IDLE;
+            this.walkCycle = -100;
+        }
+    } else if (this.state == WALKING || this.state == IDLE) {
+        this.dir = player.pos.x < this.pos.x ? -1 : 1;
+
+        if (Math.abs(this.pos.x - player.pos.x) < 60) {
+            this.sawed = false;
+            if (this.delay <= 0 && !this.choice) {
+                if (random(0, 3) < 1) {
+                    this.dashAtk();
+                } else {
+                    this.choice = 5;
+                }
+            }
+        } else if (Math.abs(this.pos.x - player.pos.x) > 60 && !this.sawed) {
+            this.sawThrow();
+        }
+
+        if (Math.abs(this.pos.x - player.pos.x) < 35) {
+            if (this.walkCycle > 0) {
+                this.walkCycle = 0;
+                this.vel.x = 0;
+
+                if (this.fn < 5) {
+                    this.fn = 5;
+                } else {
+                    this.fn = 9;
+                }
+            }
+
+            if (this.choice) {
+                this.attack();
+                this.choice = null;
+            }
+        } else if (this.walkCycle <= -8) {
+            this.step();
+        }
+
+        if (this.walkCycle > 0) {
+            this.vel.x = 16/18 * this.dir;
+            if (this.walkCycle == 9) {
+                this.fn++;
+            }
+        } else {
+            this.vel.x = 0;
+            if (this.walkCycle == 0) {
+                this.fn++;
+            } else if (this.walkCycle == -4) {
+                this.fn++;
+            }   
+        }
+
+        if (this.vel.x != 0 && Tilemap.getTile(Math.floor(this.pos.x / 16), Math.floor(this.pos.y / 16 + 1)) == 0) {
+            this.vel.x *= -1;
+            this.dir *= -1;
+        }
+    } else if (this.state == NORM_ATTK) {
+        if (this.attackDur > 0) {
+            this.attackDur--;
+            if (this.attackDur == 0) {
+                this.fn = 0;
+                this.state = WALKING;
+                this.walkCycle = -8;
+                this.delay = random(45, 90);
+            } else if (this.attackDur % 6 == 0) {
+                this.fn++;
+
+                if (this.attackDur == 24) {
+                    this.addBox(new Box(this, 13 * this.dir, -7, 23 * this.dir, 6))
+                } else if (this.attackDur == 12) {
+                    this.boxes.length = 2;
+                }
+            }
+        }
+    } else if (this.state == -1) {
+        this.boxes.length = 2;
+        this.fn = 0;
+        this.friction(0.5);
+        if (this.vel.x == 0) {
+            this.step();
+        }
+
+        if (this.vel.x != 0 && Tilemap.getTile(Math.floor(this.pos.x / 16), Math.floor(this.pos.y / 16 + 1)) == 0) {
+            this.vel.x = 0;
+        }
+    }
+
+    this.walkCycle--;
+    this.delay--;
+    this.damaged--;
+
+    if (this.damaged > 7) {
+        this.sprite.filters = [filter];
+    } else {
+        this.sprite.filters = [];
+    }
+
+    if ((this.shieldHigh && (player.state == CROUCH || player.state == CROUCH_ATTK)) || (!this.shieldHigh && player.state != CROUCH && player.state != CROUCH_ATTK)) {
+        if (this.noSwap == null) this.noSwap = random(15, 45);
+        if (this.noSwap <= 0) {
+            this.shieldHigh = !this.shieldHigh;
+            this.noSwap = null;
+        }
+    }
+    if (this.noSwap != null) this.noSwap--;
 }

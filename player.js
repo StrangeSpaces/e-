@@ -31,6 +31,8 @@ var LastHP = 3;
 function Player() {
     Entity.call(this, 'eneg', 80, 64);
 
+    this.winPause = 10;
+
     this.type = PLAYER;
     this.walkCycle = -100;
     this.dir = RIGHT;
@@ -145,6 +147,9 @@ Player.prototype.die = function() {
     this.deathCount = 36;
 
     this.sprite.visible = false;
+
+    this.hp = 0;
+    heart.texture.frame = new PIXI.Rectangle(0, 64, 12 + this.hp * 11, 32);
 }
 
 Player.prototype.attack = function() {
@@ -399,6 +404,7 @@ Player.prototype.update = function() {
     }
     this.walkCycle--;
     this.damaged--;
+    this.winPause--;
     this.f++;
 
     if (this.hp < 3 && this.f % (this.hp * 60) == 0) {
@@ -471,7 +477,7 @@ Player.prototype.updateGraphics = function() {
     frontContainer.position.y = currentContainer.position.y;
 
     power.texture.frame = new PIXI.Rectangle(0, 32, 7 + Math.ceil(this.energy * 10) * 4, 32);
-    heart.texture.frame = new PIXI.Rectangle(0, 64, 14 + this.hp * 11, 32);
+    heart.texture.frame = new PIXI.Rectangle(0, 64, 12 + this.hp * 11, 32);
 
     Entity.prototype.updateGraphics.call(this);
 }

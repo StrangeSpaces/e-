@@ -4,7 +4,12 @@ Energy.prototype.parent = Entity.prototype;
 function Energy() {
     Entity.call(this, 'energy', 16, 16);
 
+    this.halfHeight = 48;
+    this.halfWidth = 48;
     this.addBox();
+    this.halfHeight = 16;
+    this.halfWidth = 16;
+
     this.f = 0;
     this.frameNumber = Math.floor(random(0, 8));
 
