@@ -1,5 +1,5 @@
 var level;
-var levelNum = 4;
+var levelNum = 12;
 
 var levelOrder = [
     'First',
@@ -10,7 +10,6 @@ var levelOrder = [
     'Threading',
     'TwoRoads',
     'RustLadder',
-    'DaringLeaps',
     'Drops',
     'SawThatComing',
     'Cross',
@@ -80,6 +79,8 @@ var Tilemap = {
                 } else if (ent == 25) {
                     SX = x * 16 + 8;
                     SY = y * 16;
+                } else if (ent == 27) {
+                    // entity = new Boss();
                 }
 
                 if (entity) {
@@ -119,7 +120,7 @@ var Tilemap = {
             for (var x = startX; x < endX; x++) {
                 var f = placement[y * tileMapWidth + x] - 1;
 
-                if (entity == player && f == 24) {
+                if (entity == player && player.winPause < 0 && f == 24) {
                     levelNum++;
                     start();
                 }
