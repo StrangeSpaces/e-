@@ -1,13 +1,20 @@
 var level;
-var levelNum = 6;
+var levelNum = 4;
 
 var levelOrder = [
+    'First',
     'Intro',
     'CuteDogs',
+    'NiceToSawYou',
+    'FirstContact',
+    'Threading',
+    'TwoRoads',
     'RustLadder',
     'DaringLeaps',
     'Drops',
+    'SawThatComing',
     'Cross',
+    'Pinch',
     'Climb',
 ]
 
@@ -112,7 +119,7 @@ var Tilemap = {
             for (var x = startX; x < endX; x++) {
                 var f = placement[y * tileMapWidth + x] - 1;
 
-                if (f == 24) {
+                if (entity == player && f == 24) {
                     levelNum++;
                     start();
                 }
