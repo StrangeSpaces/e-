@@ -139,6 +139,14 @@ Player.prototype.damage = function() {
 }
 
 Player.prototype.die = function() {
+    track({
+        event: 'Died',
+        properties: {
+            level: levelNum,
+            level_name: level
+        }
+    });
+
     var explosion = new Explosion();
     explosion.pos.x = player.pos.x;
     explosion.pos.y = player.pos.y;

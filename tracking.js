@@ -21,7 +21,7 @@ var track_iden = guid();
 function track(data) {
     if (navigator.doNotTrack == 1) return;
 
-    data['token'] = '9BX3wh';
+    data['token'] = 'P3x9be';
 
     if (!data['customer_properties']) {
         data['customer_properties'] = {}
@@ -30,7 +30,7 @@ function track(data) {
     data['customer_properties']['$id'] = track_iden;
     data['customer_properties']['referrer'] = referrer;
 
-    var url = '//127.0.0.1:8080/api/track?i=1&data=' + 
+    var url = '//a.klaviyo.com/api/track?i=1&data=' + 
         encodeURIComponent(Base64.encode(JSON.stringify(data)));
 
     // Send with an image.

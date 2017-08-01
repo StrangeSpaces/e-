@@ -199,6 +199,12 @@ function init() {
       resources = res;
 
       window.focus();
+
+      track({
+          event: 'Started',
+          properties: {}
+      });
+
       start();
 
       // kick off the animation loop (defined below)

@@ -57,7 +57,6 @@ CollisionHandler.handles.push([PLAYER, ENEMY, function(player, enemy, boxes) {
 }]);
 
 CollisionHandler.handles.push([PLAYER, ENERGY, function(player, energy, boxes) {
-    console.log(boxes[0]);
     if (boxes[0] != 0) return;
 
     var dif = new Vec(player.pos.x - energy.pos.x, player.pos.y - energy.pos.y);

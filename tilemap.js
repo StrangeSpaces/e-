@@ -15,6 +15,7 @@ var levelOrder = [
     'Cross',
     'Pinch',
     'Climb',
+    'Final',
 ]
 
 var tiles;
@@ -121,6 +122,13 @@ var Tilemap = {
                 var f = placement[y * tileMapWidth + x] - 1;
 
                 if (entity == player && player.winPause < 0 && f == 24) {
+                    track({
+                        event: 'Beat Level',
+                        properties: {
+                            level: levelNum,
+                            level_name: level
+                        }
+                    });
                     levelNum++;
                     start();
                 }
